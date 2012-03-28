@@ -1,0 +1,31 @@
+/*
+ * colors
+ */
+
+$whitesmoke: #f5f5f5;
+$custom_red: #bd0009;
+
+@function whiten($color, $percent, $i: 1) {
+	@while $i > 0 {
+		$color: scale-color($color, $lightness: $percent);
+		$i: $i - 1;
+	}
+	@return $color;
+}
+
+@function blacken($color, $percent, $i: 1) {
+	@while $i > 0 {
+		$color: 0 + mix($color, black, 100% - $percent);
+		$i: $i - 1;
+	}
+	@return $color;
+}
+
+/*
+ * imports
+ */
+@import 'compass';
+@import 'partials/main';
+@import 'partials/form';
+@import 'partials/global';
+@import 'partials/order';

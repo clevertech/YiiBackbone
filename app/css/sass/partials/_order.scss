@@ -1,0 +1,32 @@
+div.orderView {
+
+	div.row {
+		position: relative;
+
+		div.sidebar {
+			background-color: $whitesmoke;
+			border: 1px solid #ddd;
+			position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 20px;
+				z-index: -1;
+			width: 300px;
+		}
+
+		div.fieldset.newBooking {
+
+			label.control-label {
+				width: auto;
+			}
+
+			div.controls {
+				@include float-right;
+				margin-left: 0;
+			}
+
+		}
+
+	}
+
+}

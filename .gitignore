@@ -1,0 +1,8 @@
+/app/node_modules
+/app/css/.sass-cache
+
+/protected/runtime
+/protected/config/main-local.php
+/protected/config/params-local.php
+
+

@@ -1,0 +1,37 @@
+ul.tabs {
+	margin-bottom: 0;
+
+	li {
+
+		a {
+			outline: none;
+		}
+
+		&.active a {
+			background-color: $whitesmoke;
+
+			&:hover {
+				background-color: $whitesmoke;
+			}
+
+		}
+
+	}
+
+}
+
+div.tab-content {
+
+	> div {
+		background-color: $whitesmoke;
+		border: 1px solid #ddd;
+		border-top: none;
+		padding: 9px 9px 8px 9px;
+	}
+
+}
+
+.typeahead.dropdown-menu {
+  min-width: inherit;
+  max-width: inherit;
+}

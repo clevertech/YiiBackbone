@@ -1,0 +1,37 @@
+<h1>Post Form</h1>
+<br>
+<form class="form-horizontal">
+  <fieldset>
+    <div class="row">
+      <legend>Fill in post's information</legend>
+      <hr>
+      <div class="control-group">
+        <label class="control-label" for="title">Title</label>
+        <div class="controls">
+          <input type="text" class="span9" id="title">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label" for="content">Content</label>
+        <div class="controls">
+          <textarea class="span9" id="content" rows="20"></textarea>
+        </div>
+      </div>
+      <hr>
+
+      <ul class="nav nav-list">
+        <li class="nav-header">Comments</li>
+        <% comments.each(function(model) { %>
+          <li><a class="comment-link" data-id="<%= model.get('id') %>" href="#"><%= model.get('content') %></a></li>
+        <% }); %>
+      </ul>
+      <br />
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" name="save" class="btn btn-primary">Save changes</button>
+      <button type="reset" name="cancel" class="btn">Cancel</button>
+    </div>
+  </fieldset>
+</form>

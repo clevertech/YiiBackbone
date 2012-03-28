@@ -1,0 +1,145 @@
+#loader {
+	width: 126px;
+	height: 22px;
+	position: absolute;
+	top: 9px;
+	left: 9px;
+}
+
+#loader.loading {
+	background: url(../img/ajax-loader.gif) no-repeat;  
+	display: none;
+}
+
+/**************************************************************************************************/
+
+body {
+	padding-top: 54px;
+}
+
+div.navbar {
+	background-color: $custom_red;
+	@include box-shadow(rgba(0, 0, 0, .75) 0 0 8px);
+	height: 37px;
+
+	div.navbar-inner {
+		background-color: blacken($whitesmoke, 25%, 6);
+		background-image: none;
+		@include background-image(linear-gradient(rgba(255, 255, 255, .1), rgba(0, 0, 0, .1)));
+		height: 36px;
+
+		div.container {
+			height: 36px;
+
+			#logo {
+				@include float-left;
+				width: 75px;
+				height: 24px;
+				padding-top: 10px;
+				padding-bottom: 6px;
+
+				img {
+					display: block;
+					width: 100%;
+					height: 100%;
+					margin-bottom: 0;
+				}
+
+			}
+
+			a.brand {
+				display: none;
+			}
+
+      form.form-search {
+        padding-top: 4px;
+      }
+
+      ul.nav {
+
+        li.divider-vertical {
+		      height: 36px;
+
+          a {
+            padding-top: 8px;
+          }
+        }
+
+      }
+
+			div.login {
+				@include float-right;
+				height: 28px;
+				padding-top: 4px;
+				padding-bottom: 4px;
+
+				form {
+					height: 100%;
+					margin-bottom: 0;
+
+					input[type=text],
+					input[type=password] {
+						@include float-left;
+						margin-right: 10px;
+					}
+
+					div.btn-group {
+						margin-top: 0;
+
+						button.btn {
+							margin-left: -5px;
+						}
+
+						a.btn {
+							
+						}
+
+					}
+
+				}
+
+				ul.nav {
+					height: 100%;
+					margin-left: 0;
+
+					li.dropdown {
+						height: 18px;
+						padding-top: 5px;
+						padding-bottom: 5px;
+
+						a.dropdown-toggle {
+							height: 100%;
+								line-height: 18px;
+							padding: 0;
+
+							b.caret {
+								
+							}
+
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+}
+
+div.main {
+
+  ul.list-view {
+    margin-left: 0;
+    list-style: none;
+  }
+
+  div.row {
+    margin-left: 0px;
+
+  }
+
+}

@@ -1,0 +1,34 @@
+form.form-horizontal {
+
+  div.row {
+    background-color: $whitesmoke;
+    border: 1px solid #ddd;
+    margin-left: 0px;
+    height: auto;
+
+    [class*="span"] {
+      margin-left: 0px;
+    }
+  }
+
+  hr {
+    margin-top: 0px;
+  }
+
+  legend {
+    border: none;
+    margin-bottom: 0px;
+    padding-left: 10px;
+    font-size: 12px;
+    font-style: italic;
+  }
+
+  a.inline-icon {
+    padding: 3px 5px 5px 8px;
+  }
+
+  div.well {
+    padding: 8px 0;
+  }
+
+}

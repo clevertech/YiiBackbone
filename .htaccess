@@ -1,0 +1,13 @@
+RewriteEngine on
+
+# Enable if SSL is configured 
+# Redirect all requests to the SSL version 
+# RewriteCond %{SERVER_PORT} !^443$
+# RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
+
+# if a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# otherwise forward it to index.php
+RewriteRule . index.php
