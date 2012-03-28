@@ -1,16 +1,11 @@
-YiiBackbone
+==========
 
-Author: Ivan Shaovchev (ivan.shaovchev@gmail.com)
---------
-
-INTRODUCTION
+Introduction
 ============
 
-YiiBackbone is a simepl blog web application build using Backbone.js and Yii. The source of
-this project can be used to kick-start other Backbone.js projects or serve as
-reference point on using Backbone.js. 
+YiiBackbone is a sample blog web application build using Backbone.js and Yii. The source of this project can be used to kick-start other Backbone.js projects or serve as reference point on using Backbone.js. 
 
-REQUIREMENTS
+Requirements
 ============
 
 - Apache 2 Web Server 
@@ -25,16 +20,31 @@ REQUIREMENTS
 - Node.js (http://nodejs.org/)
 - NPM (http://npmjs.org/)
 
-INSTALLATION 
+Installation 
 ============
 
-Codebase
---------
-
 You can get the source files from:
-git@github.com:clevertech/YiiBackbone.git
 
-TECHNOLOGY STACK 
+    $ git clone git@github.com:clevertech/YiiBackbone.git
+
+After you clone the repo, create a params-local.php file inside */protected/config* with something like the following:
+
+    return array(
+        'db.username'   => 'user',
+	    'db.password'   => 'pass',
+	    'db.name'       => 'db', //create the DB
+	    'db.host'       => 'localhost',
+	    'smtp.username' => 'email', //optional
+	    'smtp.password' => 'pass',  //optional
+	    'env'           => 'private',
+    );
+
+run the migrations:
+
+    $ cd YiiBackbone/protected
+    $ ./yiic migrate
+
+Technology Stack 
 ================
 
 Here are all current components of YiiBackbone and links to relevant resources. 
@@ -75,17 +85,18 @@ information on AMD please see http://requirejs.org/docs/whyamd.html
 For converting existing libraries into AMD libraries please see
 https://github.com/jrburke/requirejs/wiki/Updating-existing-libraries
 
-TESTING
+Testing
 =======
 
 For BDD on YiiBackbone we are using: 
+
 - Cucumber.js : https://github.com/cucumber/cucumber-js
 - Jasmine     : http://pivotal.github.com/jasmine/
 
 You need to install /app/package.json using NPM to enable Cucumber.js. Follow
 the instructions on Cucumber.js's docs site above. 
 
-BACKBONE RESOURCES
+Backbone Resoueces
 ==================
 
 I recommend going through the following resources so you can understand some
@@ -93,16 +104,16 @@ advanced concepts on using Backbone.js.
 
 http://lostechies.com/derickbailey/category/backbone/
 
-GOTCHAS
+Gotchas
 =======
 
 One problem that you may encounter while working with Require.js is circular
 dependecies. Please see http://requirejs.org/docs/api.html#circular
 
-KNOWN BUGS
+Known Bugs
 ==========
 
-ARCHITECTURE
+Architecture
 ============
 
 YiiBackbone's architecture is devided into two obvious parts. The server and the
@@ -116,7 +127,8 @@ side files can be found under "/protected".
 The actual app is build entirelly with JS on the client-side. All files can be
 found under "/app".
 
-The application consists of the following parts ("/app/js"):
+The application consists of the following parts ("/app/js")
+
 - models
 - collections
 - views
@@ -127,4 +139,10 @@ The application consists of the following parts ("/app/js"):
 - router.js
 - main.js
 
+Authors
+=======
+Ivan Shaovchev, @ivanshaovchev
 
+Thanks
+======
+[CleverTech](www.clevertech.biz) for supporting this OpenSource project.
