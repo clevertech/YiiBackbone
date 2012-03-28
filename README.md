@@ -35,12 +35,12 @@ After you clone the repo, create a params-local.php file inside
 
     return array(
       'db.username'   => 'user',
-	    'db.password'   => 'pass',
-	    'db.name'       => 'db', //create the DB
-	    'db.host'       => 'localhost',
-	    'smtp.username' => 'email', //optional
-	    'smtp.password' => 'pass',  //optional
-	    'env'           => 'private',
+      'db.password'   => 'pass',
+      'db.name'       => 'db', //create the DB
+      'db.host'       => 'localhost',
+      'smtp.username' => 'email', //optional
+      'smtp.password' => 'pass',  //optional
+      'env'           => 'private',
     );
 
 run the migrations:
