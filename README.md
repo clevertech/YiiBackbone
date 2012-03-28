@@ -99,6 +99,15 @@ For BDD on YiiBackbone we are using:
 You need to install /app/package.json using NPM to enable Cucumber.js. Follow
 the instructions on Cucumber.js's docs site above. 
 
+Code Style Guide
+================
+
+Indent
+------
+
+For JavaScript, CSS, HTML files use only spaces, and indent 2 spaces at a time.
+For PHP files use only tabs and indent 1 tab at a time.
+
 Backbone Resoueces
 ==================
 
