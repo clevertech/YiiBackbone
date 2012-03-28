@@ -1,9 +1,12 @@
-==========
+YiiBackbone
+===========
 
 Introduction
 ============
 
-YiiBackbone is a sample blog web application build using Backbone.js and Yii. The source of this project can be used to kick-start other Backbone.js projects or serve as reference point on using Backbone.js. 
+YiiBackbone is a sample blog web application build using Backbone.js and Yii.
+The source of this project can be used to kick-start other Backbone.js projects
+or serve as reference point on using Backbone.js. 
 
 Requirements
 ============
@@ -27,10 +30,11 @@ You can get the source files from:
 
     $ git clone git@github.com:clevertech/YiiBackbone.git
 
-After you clone the repo, create a params-local.php file inside */protected/config* with something like the following:
+After you clone the repo, create a params-local.php file inside
+*/protected/config* with something like the following:
 
     return array(
-        'db.username'   => 'user',
+      'db.username'   => 'user',
 	    'db.password'   => 'pass',
 	    'db.name'       => 'db', //create the DB
 	    'db.host'       => 'localhost',
@@ -49,7 +53,7 @@ Technology Stack
 
 Here are all current components of YiiBackbone and links to relevant resources. 
 
-Name                      Path                                             Docs URL
+Name :                    Path :                                           Docs URL
 -------------------------------------------------------------------------------------------------------
 - Yii                  : 'protected/lib/yii-1.1.9                        : http://www.yiiframework.com/ 
 - require.js           : 'app/js/libs/require/require.js                 : http://requirejs.org/           
@@ -78,9 +82,8 @@ Name                      Path                                             Docs 
 - bootstrapTypeahead   : 'app/js/libs/bootstrap/bootstrap-typeahead',    : http://twitter.github.com/bootstrap/javascript.html#typeahead
 
 Please note that all JS libs are converted to AMD format so that they can be
-loaded asynchronous. If a lib is not defined as AMD module it will not load
-properly which may cause the application not to work properly. For further
-information on AMD please see http://requirejs.org/docs/whyamd.html
+loaded asynchronously. If a lib is not defined as AMD module it will not load
+properly. For further information on AMD please see http://requirejs.org/docs/whyamd.html
 
 For converting existing libraries into AMD libraries please see
 https://github.com/jrburke/requirejs/wiki/Updating-existing-libraries
@@ -99,8 +102,8 @@ the instructions on Cucumber.js's docs site above.
 Backbone Resoueces
 ==================
 
-I recommend going through the following resources so you can understand some
-advanced concepts on using Backbone.js.
+I recommend going through the following resources for some advanced concepts on
+using Backbone.js.
 
 http://lostechies.com/derickbailey/category/backbone/
 
@@ -116,13 +119,13 @@ Known Bugs
 Architecture
 ============
 
-YiiBackbone's architecture is devided into two obvious parts. The server and the
-client. 
+YiiBackbone's architecture is devided into two obvious parts. The server and
+the client. 
 
-The server-side is handled by Yii. Yii is used to provide the DB manupulations with
-the migrations, emailing, ActiveRecord, RESTful resources, password encryption,
-secure cookie over SSL creation, console commands and few other things. All server
-side files can be found under "/protected".  
+The server-side is handled by Yii. Yii is used to provide the DB manupulations
+with the migrations, emailing, ActiveRecord, RESTful resources, password
+encryption, secure cookie over SSL creation, console commands and few other
+things. All server side files can be found under "/protected".  
 
 The actual app is build entirelly with JS on the client-side. All files can be
 found under "/app".
@@ -154,21 +157,20 @@ The MIT License
 
 Copyright (c) 2012 CleverTech
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
