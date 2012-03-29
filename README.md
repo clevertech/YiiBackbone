@@ -108,7 +108,7 @@ Indent
 For JavaScript, CSS, HTML files use only spaces, and indent 2 spaces at a time.
 For PHP files use only tabs and indent 1 tab at a time.
 
-Backbone Resoueces
+Backbone Resources
 ==================
 
 I recommend going through the following resources for some advanced concepts on
@@ -120,7 +120,7 @@ Gotchas
 =======
 
 One problem that you may encounter while working with Require.js is circular
-dependecies. Please see http://requirejs.org/docs/api.html#circular
+dependencies. Please see http://requirejs.org/docs/api.html#circular
 
 Known Bugs
 ==========
@@ -128,15 +128,15 @@ Known Bugs
 Architecture
 ============
 
-YiiBackbone's architecture is devided into two obvious parts. The server and
+YiiBackbone's architecture is divided into two obvious parts. The server and
 the client. 
 
-The server-side is handled by Yii. Yii is used to provide the DB manupulations
+The server-side is handled by Yii. Yii is used to provide the DB manipulations
 with the migrations, emailing, ActiveRecord, RESTful resources, password
 encryption, secure cookie over SSL creation, console commands and few other
 things. All server side files can be found under "/protected".  
 
-The actual app is build entirelly with JS on the client-side. All files can be
+The actual app is build entirely with JS on the client-side. All files can be
 found under "/app".
 
 The application consists of the following parts ("/app/js")
