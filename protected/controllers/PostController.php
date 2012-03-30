@@ -3,8 +3,8 @@ class PostController extends Controller
 {
 	public function actionRead($id)
 	{
-		if (!$this->checkAuth())
-			$this->sendResponse(401);
+		// if (!$this->checkAuth())
+			// $this->sendResponse(401);
 
 		$model = Post::model()->findByPk($id);
 
@@ -13,8 +13,8 @@ class PostController extends Controller
 
 	public function actionList()
 	{
-		if (!$this->checkAuth())
-			$this->sendResponse(401);
+		// if (!$this->checkAuth())
+			// $this->sendResponse(401);
 
 		$models = Post::model()->findAll();
 

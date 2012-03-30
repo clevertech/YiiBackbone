@@ -1,14 +1,15 @@
 <?php
 class UserController extends Controller 
 {
+	public function actionRead($id)
+	{
+		$model = User::model()->findByPk($id);
+
+		$this->sendResponse(200, CJSON::encode($model));
+	}
 
 	public function actionList()
 	{
-		if (!$this->checkAuth())
-			$this->sendResponse(401);
-
-		$data = CJSON::decode(file_get_contents('php://input'));
-
 		$models = User::model()->findAll(array(
 			'select'=>'id, fname, lname, username, email, role',
 		));

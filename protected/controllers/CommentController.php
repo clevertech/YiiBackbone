@@ -3,9 +3,6 @@ class CommentController extends Controller
 {
 	public function actionRead($id)
 	{
-		if (!$this->checkAuth())
-			$this->sendResponse(401);
-
 		$model = Comment::model()->findByPk($id);
 
 		$this->sendResponse(200, CJSON::encode($model));
@@ -13,9 +10,6 @@ class CommentController extends Controller
 
 	public function actionList()
 	{
-		if (!$this->checkAuth())
-			$this->sendResponse(401);
-
 		// You can use that for returning a set of models 
 		// if (isset($ids)) {
 			// $ids = explode(';', $ids);
