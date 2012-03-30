@@ -95,9 +95,9 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   /* box-shadow: inset 0px 0px 3px #ccc; */
   min-height: 28px;
   height: auto;
-  width: 500px;
+  width: 400px;
   float: left;
-  margin: 4px 0 0 4px;
+  margin: 4px 0 0 -8px;
 }
   .VS-search .VS-search-box.VS-focus {
     border-color: #acf;

@@ -17,6 +17,10 @@ body {
 	padding-top: 54px;
 }
 
+div.container {
+  width: 700px;
+}
+
 div.navbar {
 	background-color: $custom_red;
 	@include box-shadow(rgba(0, 0, 0, .75) 0 0 8px);
@@ -133,13 +137,29 @@ div.navbar {
 div.main {
 
   ul.list-view {
+    margin-top: 60px;
     margin-left: 0;
     list-style: none;
+
+    li {
+      margin: 40px 0; 
+
+      a.edit {
+        color: #444;
+      }
+
+      div.icons {
+        padding-top: 20px;
+      }
+
+      div.content {
+        
+      }
+    }
   }
 
   div.row {
     margin-left: 0px;
-
   }
 
 }
