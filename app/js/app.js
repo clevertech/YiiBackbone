@@ -49,9 +49,9 @@ define([
       this.loginModel = new LoginModel;
 
       this.initViews();
-      this.initRouter();
       this.initSearch();
       this.initMisc();
+      this.initRouter();
     },
 
     checkAuth: function() {
@@ -94,7 +94,7 @@ define([
       var commentListView = new CommentListView({collection:this.comments, vent:this.vent});
 
       // Form views
-      var postFormView    = new PostFormView({
+      var postFormView = new PostFormView({
         model : new PostModel,
         user  : this.loginModel,
         vent  : this.vent,

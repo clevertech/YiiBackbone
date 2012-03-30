@@ -3,11 +3,12 @@ define([
   'underscore', 
   'backbone',
   'modelbinding',
+  'models/post',
   'collections/comment',
   'text!templates/post/form.html',
   'views/alert',
   // 'bootstrapWysihtml5',
-  ], function($, _, Backbone, ModelBinding, CommentCollection, formTemplate, AlertView) {
+  ], function($, _, Backbone, ModelBinding, PostModel, CommentCollection, formTemplate, AlertView) {
 
   var PostFormView = Backbone.View.extend({
 
@@ -19,9 +20,10 @@ define([
     },
     
     initialize: function(options) {
-      _.bindAll(this, 'render','success','close','open');
+      _.bindAll(this, 'render','new','success','close','open');
 
       this.vent = options.vent;
+      this.vent.on('post:new' , this.new);
       this.vent.on('post:open', this.open);
 
       this.model.on('sync', this.success);
@@ -42,10 +44,9 @@ define([
 
     save: function(event) {
       event.preventDefault();
-      if (this.model.isNew()) {
-        var user = 
-        this.model.set('user_id', user);
-      }
+      // if (this.model.isNew()) {
+        // this.model.set('user_id', user);
+      // }
       this.model.save();
     },
 
@@ -53,6 +54,12 @@ define([
       event.preventDefault();
       this.close();
       this.vent.trigger('post:list');
+    },
+
+    new: function() {
+      this.model = new PostModel;
+      this.render();
+      Backbone.history.navigate('post/new');
     },
 
     open: function(model) {

@@ -2,12 +2,10 @@ define([
   'jquery', 
   'underscore', 
   'backbone',
-  'models/post',
   'views/post/item',
-  'views/post/form',
   'text!templates/post/list.html',
   'views/alert',
-  ], function($, _, Backbone, PostModel, PostItemView, PostFormView, listTemplate, AlertView) {
+  ], function($, _, Backbone, PostItemView, listTemplate, AlertView) {
 
   var PostListView = Backbone.View.extend({
 
@@ -21,13 +19,14 @@ define([
       _.bindAll(this, 'render','renderItem','list','close');
 
       this.user = options.user;
+
       this.vent = options.vent;
       this.vent.on('post:list', this.list);
-      this.vent.on('post:new' , this.new);
 
       this.collection.on('reset', this.render);
       this.collection.on('sync',  this.render);
       this.collection.on('error', this.error);
+
     },
 
     render: function() {
@@ -50,10 +49,8 @@ define([
     },
 
     new: function(event) {
-      if (event) event.preventDefault();
-      var formView = new PostFormView({model: new PostModel, vent:this.vent});
-      formView.render();
-      Backbone.history.navigate('post/new');
+      event.preventDefault();
+      this.vent.trigger('post:new');
     },
 
     error: function(model, response) {
