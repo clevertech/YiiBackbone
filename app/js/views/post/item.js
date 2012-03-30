@@ -63,11 +63,12 @@ define([
 
     confirmDelete: function() {
       this.model.destroy();
-      this.close();
+      // this.close(); TODO fix
     },
 
     error: function(model, response) {
-      var alertView = new AlertView({msg: response.responseText, type: 'error'});
+      var msg = response.responseText ? response.responseText : response.statusText; 
+      var alertView = new AlertView({msg:msg,type:'error'});
       $('.head').html(alertView.render().el); 
     },
 
