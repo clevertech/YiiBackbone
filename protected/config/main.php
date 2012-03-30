@@ -45,6 +45,7 @@ return CMap::mergeArray (array(
 
 				array('user/list'       , 'pattern'=>'api/user'             , 'verb'=>'GET'), 
 				array('user/create'     , 'pattern'=>'api/user'             , 'verb'=>'POST'), 
+				array('post/read'       , 'pattern'=>'api/user/<id:\d+>'    , 'verb'=>'GET'), 
 				array('user/update'     , 'pattern'=>'api/user/<id:\d+>'    , 'verb'=>'PUT'), 
 				array('user/delete'     , 'pattern'=>'api/user/<id:\d+>'    , 'verb'=>'DELETE'), 
 

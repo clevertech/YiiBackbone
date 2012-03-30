@@ -20,6 +20,7 @@ define([
     initialize: function(options) {
       _.bindAll(this, 'render','renderItem','list','close');
 
+      this.user = options.user;
       this.vent = options.vent;
       this.vent.on('post:list', this.list);
       this.vent.on('post:new' , this.new);
@@ -37,9 +38,9 @@ define([
       return this;
     },
 
-    renderItem: function(model){
+    renderItem: function(model) {
       var itemView = new PostItemView({model:model, vent:this.vent});
-      this.$('ul').append(itemView.render().el);
+      this.$('ul').append(itemView.el);
     },
     
     list: function() {
@@ -51,6 +52,7 @@ define([
     new: function(event) {
       if (event) event.preventDefault();
       var formView = new PostFormView({model: new PostModel, vent:this.vent});
+      formView.render();
       Backbone.history.navigate('post/new');
     },
 

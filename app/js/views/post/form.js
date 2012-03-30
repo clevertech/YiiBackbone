@@ -26,15 +26,10 @@ define([
 
       this.model.on('sync', this.success);
       this.model.on('error', this.error);
-      
-      $.when(this.model.fetchRelated('comments'))
-       .done(this.render);
     },
 
     render: function(){
-      var comments = this.model.get('comments');
-
-      this.$el.html(this.formTemplate({comments: comments}));
+      this.$el.html(this.formTemplate());
       $('.main').html(this.$el);
 
       ModelBinding.bind(this);
@@ -47,6 +42,10 @@ define([
 
     save: function(event) {
       event.preventDefault();
+      if (this.model.isNew()) {
+        var user = 
+        this.model.set('user_id', user);
+      }
       this.model.save();
     },
 

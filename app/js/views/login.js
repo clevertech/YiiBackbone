@@ -43,8 +43,7 @@ define([
       if (value) { 
         this.$el.html('');
         this.vent.trigger('user:navbar', model);
-      } 
-      else this.render();
+      } else this.render();
     },
 
     login: function(event) {

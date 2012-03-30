@@ -34,39 +34,27 @@ define([
   var App = Backbone.View.extend({
 
     initialize: function() {
-      _.bindAll(this, 'initLogin','initAuthenticated','initSearch','initListViews','initRouter','initMisc');
+      _.bindAll(this,'initSearch','initViews','initRouter','initMisc','checkAuth');
 
       // declare main custom event object
       this.vent = _.extend({}, Backbone.Events);
 
       this.users    = new UserCollection;
+      this.users.fetch();
+
       this.posts    = new PostCollection;
       this.comments = new CommentCollection;
 
-      this.initLogin();
-      this.initRouter();
-    },
-
-    initAuthenticated: function(model,value) {
-      if (value) {
-        this.initFormViews();
-        this.initListViews();
-        this.initSearch();
-        this.initMisc();
-      }
-    },
-
-    initLogin: function() {
       // Initialize login view 
-      var loginModel = new LoginModel;
-      loginModel.on('change:authenticated', this.initAuthenticated);
+      this.loginModel = new LoginModel;
 
-      var loginView = new LoginView({model:loginModel, vent:this.vent});
-      loginView.render();
+      this.initViews();
+      this.initRouter();
+      this.initSearch();
+      this.initMisc();
+    },
 
-      // Initialize navbar and main views 
-      var navbarView = new NavbarView({vent:this.vent});
-
+    checkAuth: function() {
       // Check user authentication
       var params = this.getCookieParams();
       if (params) {
@@ -88,14 +76,29 @@ define([
       });
     },
 
-    initListViews: function() {
-      var userListView        = new UserListView({collection:this.users, app:this}); // change app to vent
-      var postListView        = new PostListView({collection:this.posts, vent:this.vent });
-      var commentListView     = new CommentListView({collection:this.comments, vent:this.vent});
-    },
+    initViews: function() {
+      // Login view
+      var loginView = new LoginView({model:this.loginModel, vent:this.vent});
+          loginView.render();
 
-    initFormViews: function() {
-      var postFormView    = new PostFormView({model: new PostModel, vent:this.vent});
+      // Navbar view
+      var navbarView = new NavbarView({vent:this.vent});
+
+      // List views
+      var userListView    = new UserListView({collection:this.users, vent:this.vent});
+      var postListView = new PostListView({
+        collection : this.posts,
+        user       : this.loginModel,
+        vent       : this.vent,
+      });
+      var commentListView = new CommentListView({collection:this.comments, vent:this.vent});
+
+      // Form views
+      var postFormView    = new PostFormView({
+        model : new PostModel,
+        user  : this.loginModel,
+        vent  : this.vent,
+      });
       var commentFormView = new CommentFormView({model: new CommentModel, vent:this.vent});
     },
 

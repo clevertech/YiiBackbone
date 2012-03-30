@@ -21,9 +21,9 @@ define([
     initialize: function(options) {
       _.bindAll(this, 'render','renderItem','list','close');
 
-      this.app = options.app;
-      this.app.vent.on('user:list', this.list);
-      this.app.vent.on('user:new', this.new);
+      this.vent = options.vent;
+      this.vent.on('user:list', this.list);
+      this.vent.on('user:new', this.new);
 
       this.collection.on('reset', this.render);
       this.collection.on('sync', this.render);
@@ -39,7 +39,7 @@ define([
     },
 
     renderItem: function(model){
-      var itemView = new UserItemView({model:model, app:this.app});
+      var itemView = new UserItemView({model:model, vent:this.vent});
       this.$('tbody').append(itemView.render().el);
     },
     
@@ -52,7 +52,7 @@ define([
     new: function(event) {
       if (event) event.preventDefault();
 
-      var formView = new UserFormView({model: new UserModel, app:this.app});
+      var formView = new UserFormView({model: new UserModel, vent:this.vent});
       $('.main').html(formView.render().el);
 
       Backbone.history.navigate('user/new');

@@ -6,6 +6,7 @@ define([
   'views/alert',
   'views/modal/confirm',
   'text!templates/post/item.html',
+  'jqueryUIDatepicker',
   ], function($, _, Backbone, ModelBinding, AlertView, ModalConfirmView, itemTemplate) {
 
   var PostItemView = Backbone.View.extend({
@@ -26,16 +27,27 @@ define([
 
       this.model.on('error', this.error);
       this.model.on('modal:confirm', this.confirmDelete);
+
+      $.when(this.model.fetchRelated('comments'))
+       .done(this.render);
     },
 
     render: function(template) {
-      this.$el.html(this.itemTemplate(this.model.toJSON()));
+      this.model.set('create_date_formatted', $.datepicker.formatDate('d M, yy', new Date(this.model.get('create_date'))));
+
+      this.$el.html(this.itemTemplate({
+        model    : this.model.toJSON(),
+        author   : this.model.get('author') ? this.model.get('author').toJSON() : '',
+        comments : this.model.get('comments'),
+      }));
       return this;
     },
 
     edit: function(event){
       event.preventDefault();
-      this.vent.trigger('post:open', this.model);
+      $('.main').html(this.el);
+
+      // this.vent.trigger('post:open', this.model);
     },
 
     delete: function(event) {

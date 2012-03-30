@@ -25,7 +25,7 @@
       <div class="navbar-inner">
         <div class="container">
           <div id="loader" class="loading"></div>
-          <a id="logo" href="#">YiiBackbone</a>
+          <!-- <a id="logo" href="#">YiiBackbone</a> -->
           <a class="brand" href="#">Scherago</a>
           <div id="search"></div>
           <ul class="nav pull-right"></ul>

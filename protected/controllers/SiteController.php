@@ -54,6 +54,7 @@ class SiteController extends Controller
 			));
 
 			$login = (object) array();
+			$login->id = $user->id;
 			$login->fname = $user->fname;
 			$login->lname = $user->lname;
 			$login->email = $user->email;
@@ -159,7 +160,7 @@ To complete the password reset process, please follow this link:
 $pwResetLink 
         
 Regards,
-Scherago Admin
+Admin
 ";
 		Yii::app()->mailer->Body = $body;
 		if ($return = Yii::app()->mailer->Send())
