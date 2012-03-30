@@ -98,6 +98,10 @@ class Controller extends CController
 	protected function checkAuth()
 	{
 		$cookie = Yii::app()->request->cookies['_yiibackbone'];
+
+		if (!$cookie) 
+			return false;
+
 		list($username,$token) = explode(',',$cookie->value);
 
 		// current time - 2 hours (two hours in the past) 
