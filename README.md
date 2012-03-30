@@ -2,6 +2,8 @@ YiiBackbone
 ===========
 
 Status: Work in progress. 
+Integration environment: http://yiibackbone.int.clevertech.biz/
+Login: admin/pass1234
 
 Introduction
 ============
