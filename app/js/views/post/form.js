@@ -20,7 +20,7 @@ define([
     },
     
     initialize: function(options) {
-      _.bindAll(this, 'render','new','success','close','open');
+      _.bindAll(this, 'render','new','open','close','success','error');
 
       this.vent = options.vent;
       this.vent.on('post:new' , this.new);
@@ -57,7 +57,6 @@ define([
     },
 
     new: function() {
-      this.model = new PostModel;
       this.render();
       Backbone.history.navigate('post/new');
     },
@@ -80,7 +79,8 @@ define([
     },
 
     error: function(model, response) {
-      var alertView = new AlertView({msg: response.responseText, type: 'error'});
+      var msg = response.responseText ? response.responseText : response.statusText; 
+      var alertView = new AlertView({msg:msg,type:'error'});
       $('.head').html(alertView.render().el); 
     },
 
