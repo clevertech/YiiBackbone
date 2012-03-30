@@ -64,9 +64,7 @@ define([
       
       // TODO refactor, append() or html() in render() maybe 
       // Clean DOM 
-      $('#search').html('');
       $('.nav').html('');
-      $('.main').html('');
     },
 
     // Password reset functions:
