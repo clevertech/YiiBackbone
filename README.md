@@ -1,12 +1,14 @@
 YiiBackbone
 ===========
 
+Status: Work in progress. 
+
 Introduction
 ============
 
 YiiBackbone is a sample blog web application build using Backbone.js and Yii.
 The source of this project can be used to kick-start other Backbone.js projects
-or serve as reference point on using Backbone.js. 
+or serve as reference point on using Backbone.js.
 
 Requirements
 ============
