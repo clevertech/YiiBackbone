@@ -35,7 +35,7 @@ class UserController extends Controller
 		if (!$model->save()) {
 			$errors = array();
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
-			throw new CException(implode("\n", $errors));
+			$this->sendResponse(500, implode("<br />", $errors));
 		}
 
 		$this->sendResponse(200);
@@ -61,7 +61,7 @@ class UserController extends Controller
 		if (!$model->save()) {
 			$errors = array();
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
-			throw new CException(implode("\n", $errors));
+			$this->sendResponse(500, implode("<br />", $errors));
 		}
 
 		$this->sendResponse(200);
@@ -79,7 +79,7 @@ class UserController extends Controller
 		if (!$model->delete()) {
 			$errors = array();
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
-			throw new CException(implode("\n", $errors));
+			$this->sendResponse(500, implode("<br />", $errors));
 		} 
 
 		$this->sendResponse(200);

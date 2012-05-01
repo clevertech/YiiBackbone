@@ -17,6 +17,8 @@ class Post extends CActiveRecord
 	public function rules()
 	{
 		return array(
+			array('title, content', 'required'),
+			array('title', 'length', 'min' => 3, 'max' => 100),
 			array('create_date', 'default', 'value' => new CDbExpression('NOW()'), 'setOnEmpty' => false, 'on' => 'insert')
 		);
 	}
