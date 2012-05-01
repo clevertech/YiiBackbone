@@ -13,7 +13,7 @@ class m120328_085408_base_db extends CDbMigration
 			'pw_reset_token' => 'string',
 			'email'          => 'string',
 			'role'           => 'string',
-			'is_deleted'     => 'boolean',
+			'is_deleted'     => 'int',
 			'create_date'    => 'datetime',
 		), 'ENGINE=InnoDB');
 
@@ -29,7 +29,7 @@ class m120328_085408_base_db extends CDbMigration
 			'title'          => 'string',
 			'content'        => 'string',
 			'user_id'        => 'int',
-			'is_deleted'     => 'boolean',
+			'is_deleted'     => 'int',
 			'create_date'    => 'datetime',
 		), 'ENGINE=InnoDB');
 
@@ -38,7 +38,7 @@ class m120328_085408_base_db extends CDbMigration
 			'post_id'        => 'int',
 			'content'        => 'string',
 			'user_id'        => 'int',
-			'is_deleted'     => 'boolean',
+			'is_deleted'     => 'int',
 			'create_date'    => 'datetime',
 		), 'ENGINE=InnoDB');
 
@@ -53,7 +53,7 @@ class m120328_085408_base_db extends CDbMigration
 			'pw_reset_token' => '',
 			'email'          => 'super@yiibackbone.loc',
 			'role'           => 'admin',
-			'is_deleted'     => false,
+			'is_deleted'     => 0,
 			'create_date'    => new CDbExpression('NOW()'),
 		));
 		$userId = Yii::app()->db->getLastInsertId();
@@ -62,7 +62,7 @@ class m120328_085408_base_db extends CDbMigration
 			'title'          => 'Lorem Ipsum',
 			'content'        => 'Sed posuere consectetur est at lobortis. Donec id elit non mi porta gravida at eget metus. Donec ullamcorper nulla non metus auctor fringilla. Nullam id dolor id nibh ultricies vehicula ut id elit. Maecenas faucibus mollis interdum.',
 			'user_id'        => $userId,
-			'is_deleted'     => false,
+			'is_deleted'     => 0,
 			'create_date'    => new CDbExpression('NOW()'),
 		));
 		$postId = Yii::app()->db->getLastInsertId();
@@ -71,7 +71,7 @@ class m120328_085408_base_db extends CDbMigration
 			'content'        => 'Sed posuere consectetur est at lobortis. Donec id elit non mi porta gravida at eget metus. Donec ullamcorper nulla non metus auctor fringilla. Nullam id dolor id nibh ultricies vehicula ut id elit. Maecenas faucibus mollis interdum.',
 			'post_id'        => $postId,
 			'user_id'        => $userId,
-			'is_deleted'     => false,
+			'is_deleted'     => 0,
 			'create_date'    => new CDbExpression('NOW()'),
 		));
 	}
