@@ -109,7 +109,7 @@ class Controller extends CController
 		if (Yii::app()->db->createCommand()
 			->select('id')
 			->from('cookie')
-			->where("username=:u AND token=:t AND create_date < :c", array(':u'=>$username,':t'=>$token,':c'=>$timeCheck))
+			->where("username=:u AND token=:t AND create_date > :c", array(':u'=>$username,':t'=>$token,':c'=>$timeCheck))
 			->queryRow())
 			return true;
 		else
