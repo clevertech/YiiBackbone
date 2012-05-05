@@ -47,8 +47,9 @@ class PostController extends Controller
 
 	public function actionUpdate($id)
 	{
-		if (!$this->checkAuth())
+		if (!$this->checkAuth()) {
 			$this->sendResponse(401);
+		}
 
 		$data = CJSON::decode(file_get_contents('php://input'));
 
@@ -68,14 +69,17 @@ class PostController extends Controller
 
 	public function actionDelete($id)
 	{
-		if (!$this->checkAuth())
+		if (!$this->checkAuth()) {
 			$this->sendResponse(401);
+		}
 
 		$model = Post::model()->findByPk($id);
 
-		if (!$model->delete()) {
+		if (!$model->delete() && count($model->getErrors())) {
 			$errors = array();
-			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
+			foreach ($model->getErrors() as $e) {
+				$errors = array_merge($errors, $e);
+			}
 			$this->sendResponse(500, implode("<br />", $errors));
 		} 
 		
