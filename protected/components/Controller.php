@@ -105,7 +105,7 @@ class Controller extends CController
 		list($username,$token) = explode(',',$cookie->value);
 
 		// current time - 2 hours (two hours in the past) 
-		$timeCheck = date('Y-m-d H:i:s', time()-(60*60*2)); 
+		$timeCheck = date('Y-m-d H:i:s', time()-(60*60*2));
 		if (Yii::app()->db->createCommand()
 			->select('id')
 			->from('cookie')
