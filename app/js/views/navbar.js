@@ -15,14 +15,13 @@ define([
     dropdownTemplate : _.template(dropdownTemplate),
 
     events: {
-      "click .brand"    : "home",
       "click #logout"   : "logout",
       "click #userlist" : "userList",
       "click #postList" : "postList",
     },
 
     initialize: function(options) {
-      _.bindAll(this, 'render','home','logout','userList','close');
+      _.bindAll(this, 'render','logout','userList','close');
 
       this.vent = options.vent;
       this.vent.on('user:navbar', this.render);
@@ -31,11 +30,6 @@ define([
     render: function(model) {
       this.$('.nav').html(this.dropdownTemplate(model.toJSON()));
       return this;
-    },
-
-    home: function(event) {
-      if (event !== undefined) event.preventDefault();
-      Backbone.history.navigate("");
     },
 
     logout: function(event) {
