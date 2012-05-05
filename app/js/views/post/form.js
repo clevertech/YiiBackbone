@@ -85,6 +85,7 @@ define([
     },
 
     close: function() {
+	  this.unbind();
       ModelBinding.unbind(this);
       this.model.off('sync', this.success);
       this.model.off('error', this.error);

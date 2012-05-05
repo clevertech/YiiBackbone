@@ -3,7 +3,7 @@
     <a href="#" class="edit"><i class="icon-edit"></i></a>
     <a href="#" data-toggle="modal" data-target="#modal" class="delete"><i class="icon-trash"></i></a>
   </div>
-  <h1><a class="edit" href="#"><%= model.title %></a></h1>
+  <h1><a class="view" href="#"><%= model.title %></a></h1>
   <span class="post-meta"><%= model.create_date_formatted %> / <%= comments.length %> comments / by <%= author ? author.username : '' %></span>
   <hr>
   <div class="content"><%= model.content %></div>
