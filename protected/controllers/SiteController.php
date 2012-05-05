@@ -50,7 +50,7 @@ class SiteController extends Controller
 			$command->insert('cookie', array(
 				'username'=> $user->username,
 				'token'=>$token,
-				'create_date' => new CDbExpression('NOW()'),
+				'create_date' => date('Y-m-d H:i:s', time()),
 			));
 
 			$login = (object) array();
