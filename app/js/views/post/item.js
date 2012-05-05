@@ -18,6 +18,7 @@ define([
     events: {
       'click a.edit'   : 'edit',
       'click a.delete' : 'delete',
+	  'click a.view' : 'view',
     },
     
     initialize: function(options) {
@@ -47,7 +48,14 @@ define([
       event.preventDefault();
       $('.main').html(this.el);
 
-      // this.vent.trigger('post:open', this.model);
+      this.vent.trigger('post:open', this.model);
+    },
+
+	view: function(event){
+      event.preventDefault();
+      $('.main').html(this.el);
+
+      Backbone.history.navigate('post/read/' + this.model.get('id'));
     },
 
     delete: function(event) {
@@ -63,7 +71,7 @@ define([
 
     confirmDelete: function() {
       this.model.destroy();
-      // this.close(); TODO fix
+      this.close();
     },
 
     error: function(model, response) {

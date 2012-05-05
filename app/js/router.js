@@ -23,17 +23,14 @@ define([
     },
 
     home: function() {
-      console.log('home route triggered!');
       this.vent.trigger('post:list');
     },
   
     userList: function() {
-      console.log('user/list route triggered!');
       this.vent.trigger('user:list');
     },
 
     userNew: function() {
-      console.log('user/new route triggered!');
       this.vent.trigger('user:new');
     },
 
@@ -42,12 +39,10 @@ define([
     },
 
     postList: function() {
-      console.log('post/list route triggered!');
       this.vent.trigger('post:list');
     },
 
     postNew: function() {
-      console.log('post/new route triggered!');
       this.vent.trigger('post:new');
     },
 

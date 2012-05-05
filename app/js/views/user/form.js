@@ -19,7 +19,7 @@ define([
     initialize: function(options) {
       _.bindAll(this, 'render','success','close');
 
-      this.app = options.app;
+      this.vent = options.vent;
       this.model.on('error', this.error);
       this.model.on('sync', this.success);
     },
@@ -42,7 +42,7 @@ define([
       event.preventDefault();
 
       this.close();
-      this.app.vent.trigger('user:list');
+      this.vent.trigger('user:list');
     },
 
     success: function() {
@@ -53,7 +53,7 @@ define([
       $('.head').html(alertView.render().el); 
 
       this.close();
-      this.app.vent.trigger('user:list');
+      this.vent.trigger('user:list');
     },
 
     error: function(model, response) {
