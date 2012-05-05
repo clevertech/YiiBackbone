@@ -52,15 +52,18 @@ define([
       this.initSearch();
       this.initMisc();
       this.initRouter();
+	  this.checkAuth();
     },
 
     checkAuth: function() {
+	  self = this;
+
       // Check user authentication
       var params = this.getCookieParams();
       if (params) {
-        loginModel.set('username', params.username);
-        loginModel.set('token', params.token);
-        loginModel.set('authenticated', true);
+        self.loginModel.set('username', params.username);
+        self.loginModel.set('token', params.token);
+        self.loginModel.set('authenticated', true);
       } 
     },
 

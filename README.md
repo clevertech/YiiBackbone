@@ -47,6 +47,8 @@ After you clone the repo, create a params-local.php file inside
       'env'           => 'private',
     );
 
+Create a folder _protected/runtime_  and make it writable by the webserver.
+
 run the migrations:
 
     $ cd YiiBackbone/protected
