@@ -23,6 +23,7 @@ requirejs.config({
     backboneRelational   : 'libs/backbone/backbone-relational',
     modelbinding         : 'libs/backbone/backbone.modelbinding',
     visualsearch         : 'libs/app/visualsearch',
+    marionette           : 'libs/backbone/backbone.marionette',
     text                 : 'libs/require/text',
     domReady             : 'libs/require/domReady',
     json                 : 'libs/utils/json2',
@@ -44,6 +45,9 @@ requirejs.config({
     },
     visualsearch: {
       deps: ['backbone', 'jqueryUIAutocomplete']
+    },
+    marionette: {
+      deps: ['backbone']
     }
   }
 });
@@ -54,9 +58,11 @@ define([
   'backbone',
   'domReady',
   'router',
+  'app',
   'models/login',
   'models/post',
   'models/comment',
+  'models/webUser',
   'collections/user',
   'collections/post',
   'collections/comment',
@@ -69,22 +75,204 @@ define([
   'views/comment/list',
   'views/post/form',
   'views/comment/form',
+  'views/user/form',
+  'views/post/form',
+  'views/alert',
+  'models/user',
+  'views/post/item',
   'cookie',
   'bootstrapDropdown',
   'bootstrapModal',
   'backboneRelational'
 ], function($, _, Backbone, domReady,
-            Router,
-            LoginModel, PostModel, CommentModel,
+            Router, App,
+            LoginModel, PostModel, CommentModel, WebUser,
             UserCollection, PostCollection, CommentCollection,
             HomeView, NavbarView, SearchView, LoginView,
             UserListView, PostListView, CommentListView,
-            PostFormView, CommentFormView) {
+            PostFormView, CommentFormView, UserForm, PostForm, AlertView,
+            UserModel, PostItem) {
 
-  var App = Backbone.View.extend({
+  $.ajaxSetup({
+    dataFilter: function(data, dataType) {
+      if ('Login Required!' === data) {
+        window.location.replace('/#login');
+        // Return something not json parsable to
+        // stop event triggering and ajax loading.
+        // Looking for better solution.
+        return ';';
+      }
+      return data;
+    }
+  });
+
+  // Initialize Router
+  App.addInitializer(function (options) {
+    this.router = new Router();
+    Backbone.history.start();
+  });
+
+
+  // JS sugar for all dropdowns with this class
+  App.addInitializer(function (options) {
+    $('.dropdown-toggle').dropdown();
+  });
+
+  // Cross app collections
+  App.users    = new UserCollection;
+  App.posts    = new PostCollection;
+  App.comments = new CommentCollection;
+
+  // Web User
+  App.vent.on('webUser:init', function(data) {
+
+    var model = data instanceof WebUser ? data : new WebUser(data);
+    var navbarView = new NavbarView({model: model});
+
+    navbarView.render();
+    var searchView = new SearchView({});
+    searchView.render();
+    model.on('destroy', searchView.close, searchView);
+    model.on('destroy',function() {
+      navbarView.close();
+      App.vent.trigger('login');
+    });
+
+    model.on('destroy', function() {App.vent.trigger('login')});
+    this.vent.on('logout', model.destroy, model);
+  }, App);
+
+  App.vent.on('login', function() {
+    Backbone.history.navigate('/#login');
+    var model = new WebUser;
+    var loginView = new LoginView({model: model});
+    this.mainRegion.show(loginView);
+    model.on('login', function() {
+      App.vent.trigger('webUser:init', this);
+      App.vent.trigger('order:new');
+    }, model);
+  }, App);
+
+  // Alerts
+
+  App.vent.on('alert', function (options) {
+    var alertView = new AlertView(options);
+    this.headRegion.show(alertView);
+  }, App);
+
+  // Users
+
+  App.vent.on('user:list', function () {
+    $.when(
+      this.users.length || this.users.fetch()
+    ).done(function() {
+        Backbone.history.navigate('user/list');
+        var view = new UserListView({
+          collection: App.users
+        });
+        App.mainRegion.show(view);
+      });
+  }, App);
+
+  App.vent.on('user:new', function() {
+    Backbone.history.navigate('user/new');
+    var view = new UserForm({model: new UserModel, vent:this.vent});
+    App.mainRegion.show(view);
+  }, App);
+
+  App.vent.on('user:new', function () {
+    Backbone.history.navigate('user/new');
+    App.vent.trigger('user:form', new UserModel);
+  }, App);
+
+  App.vent.on('user:edit', function (model, options) {
+    $.when(function () {
+      if (!model) {
+        model = new UserModel(options);
+        return model.fetch();
+      }
+      return model;
+    }()).then(function () {
+        Backbone.history.navigate('user/edit/' + model.get('id'));
+        App.vent.trigger('user:form', model);
+      });
+  }, App);
+
+  App.vent.on('user:form', function (model) {
+    $.when(
+//      this.accounts.length || this.accounts.fetch(),
+//      this.publications.length || this.publications.fetch(),
+//      this.rateTypes.length || this.rateTypes.fetch(),
+//      this.representatives.length || this.representatives.fetch()
+    ).done(function () {
+        var view = new UserForm({model: model});
+        App.mainRegion.show(view);
+      });
+  }, App);
+
+  // Posts
+  App.vent.on('post:list', function () {
+    $.when(
+      this.posts.length || this.posts.fetch()
+    ).done(function() {
+        Backbone.history.navigate('post/list');
+        var view = new PostListView({
+          collection : App.posts,
+//          user       : this.loginModel,
+        });
+        App.mainRegion.show(view);
+      });
+  }, App);
+
+  App.vent.on('post:new', function () {
+    Backbone.history.navigate('order/new');
+    App.vent.trigger('order:form', new PostModel);
+  }, App);
+
+  App.vent.on('post:edit', function (model, options) {
+    $.when(function () {
+      if (!model) {
+        model = new PostModel(options);
+        return model.fetch();
+      }
+      return model;
+    }()).then(function () {
+      Backbone.history.navigate('post/edit/' + model.get('id'));
+      App.vent.trigger('post:form', model);
+    });
+  }, App);
+
+  App.vent.on('post:form', function (model) {
+    $.when(
+//      this.accounts.length || this.accounts.fetch(),
+//      this.publications.length || this.publications.fetch(),
+//      this.rateTypes.length || this.rateTypes.fetch(),
+//      this.representatives.length || this.representatives.fetch()
+    ).done(function () {
+        var view = new PostForm({model: model});
+        App.mainRegion.show(view);
+      });
+  }, App);
+
+  App.vent.on('post:read', function(model, options) {
+    $.when(function () {
+      if (!model) {
+        model = new PostModel(options);
+        return model.fetch();
+      }
+      return model;
+    }()).then(function () {
+      Backbone.history.navigate('post/read/' + model.get('id'));
+      var view = new PostItem({model: model});
+      App.mainRegion.show(view);
+    });
+
+  }, App);
+
+  var TT = Backbone.View.extend({
 
     initialize: function() {
-      _.bindAll(this,'initSearch','initViews','initRouter','initMisc','checkAuth');
+      _.bindAll(this,'initSearch','initViews','checkAuth');
 
       // declare main custom event object
       this.vent = _.extend({}, Backbone.Events);
@@ -100,8 +288,6 @@ define([
 
       this.initViews();
       this.initSearch();
-      this.initMisc();
-      this.initRouter();
       this.checkAuth();
     },
 
@@ -155,21 +341,6 @@ define([
       var commentFormView = new CommentFormView({model: new CommentModel, vent:this.vent});
     },
 
-    initRelationalModels: function() {
-      // you can put dummy model initialization to fix a flaw in relations (new Model());
-
-    },
-
-    initRouter: function() {
-      // Initialize router
-      this.router = new Router({vent:this.vent});
-      Backbone.history.start();
-    },
-
-    initMisc: function() {
-      // JS sugar for all dropdowns with this class
-      $('.dropdown-toggle').dropdown();
-    },
 
     getCookieParams: function() {
       if ($.cookie('_yiibackbone')) {
@@ -180,9 +351,11 @@ define([
         }
         return params;
       }
-    },
+    }
 
   });
 
-  return new App;
+  // Load code defined on php side in main layout and start an App.
+  require(['onLoad']);
+  App.start();
 });

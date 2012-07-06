@@ -1,30 +1,25 @@
 define([
-  'jquery', 
-  'underscore', 
+  'jquery',
+  'underscore',
   'backbone',
   'modelbinding',
-  'views/alert',
+  'app',
   'views/modal/confirm',
   'text!templates/post/item.html',
-  'jqueryUIDatepicker',
-  ], function($, _, Backbone, ModelBinding, AlertView, ModalConfirmView, itemTemplate) {
+  'jqueryUIDatepicker'
+  ], function($, _, Backbone, ModelBinding, App, ModalConfirmView, template) {
 
-  var PostItemView = Backbone.View.extend({
-
+  return Backbone.View.extend({
     tagName: 'li',
-
-    itemTemplate : _.template(itemTemplate),
-
+    template : _.template(template),
     events: {
-      'click a.edit'   : 'edit',
       'click a.delete' : 'delete',
-	  'click a.view' : 'view',
+  	  'click a.read'   : 'read',
+      'click a.edit'   : 'edit'
     },
-    
+
     initialize: function(options) {
       _.bindAll(this, 'render','confirmDelete');
-
-      this.vent = options.vent;
 
       this.model.on('error', this.error);
       this.model.on('modal:confirm', this.confirmDelete);
@@ -35,49 +30,47 @@ define([
 
     render: function(template) {
       this.model.set('create_date_formatted', $.datepicker.formatDate('d M, yy', new Date(this.model.get('create_date'))));
-
-      this.$el.html(this.itemTemplate({
-        model    : this.model.toJSON(),
-        author   : this.model.get('author') ? this.model.get('author').toJSON() : '',
-        comments : this.model.get('comments'),
-      }));
+      var self = this;
+      $.when.apply(null, this.model.fetchRelated('comments')).done(function() {
+        self.$el.html(self.template({
+          model    : self.model.toJSON(),
+          author   : self.model.get('author') ? self.model.get('author').toJSON() : '',
+          comments : self.model.get('comments')
+        }));
+      });
       return this;
+    },
+
+	  read: function(event){
+      event.preventDefault();
+      App.vent.trigger('post:read', this.model);
     },
 
     edit: function(event){
       event.preventDefault();
-      $('.main').html(this.el);
-
-      this.vent.trigger('post:open', this.model);
-    },
-
-	view: function(event){
-      event.preventDefault();
-      $('.main').html(this.el);
-
-      Backbone.history.navigate('post/read/' + this.model.get('id'));
+      App.vent.trigger('post:edit', this.model);
     },
 
     delete: function(event) {
       event.preventDefault();
 
       var modalConfirmView = new ModalConfirmView({
-        model  : this.model, 
-        header : 'Confirm Delete', 
+        model  : this.model,
+        header : 'Confirm Delete',
         body   : 'Are you sure you want to delete this item?'
       });
-      $('.head').html(modalConfirmView.render().el); 
+      $('.head').html(modalConfirmView.render().el);
     },
 
     confirmDelete: function() {
-      this.model.destroy();
-      this.close();
+      $.when(this.model.destroy()).done(this.close);
     },
 
     error: function(model, response) {
-      var msg = response.responseText ? response.responseText : response.statusText; 
-      var alertView = new AlertView({msg:msg,type:'error'});
-      $('.head').html(alertView.render().el); 
+      App.vent.trigger('alert', {
+        msg: response.responseText ? response.responseText : response.statusText,
+        type: 'error'
+      });
     },
 
     close: function() {
@@ -85,9 +78,6 @@ define([
       this.model.off('modal:confirm', this.confirmDelete);
       this.undelegateEvents();
       this.remove();
-    },
-
+    }
   });
-
-  return PostItemView;
 });

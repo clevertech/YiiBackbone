@@ -1,52 +1,58 @@
 define([
   'jquery',
   'underscore',
-  'backbone'
-  ], function($, _, Backbone) {
+  'backbone',
+  'app'
+  ], function($, _, Backbone, App) {
 
-  var Router = Backbone.Router.extend({
+  return Backbone.Router.extend({
 
     routes: {
-      ""                     : "home",
+      ""                     : "postList",
       "user/list"            : "userList",
       "user/new"             : "userNew",
       "user/edit/:id"        : "userEdit",
       "user/delete/:id"      : "userDelete",
       "post/list"            : "postList",
       "post/new"             : "postNew",
+      "post/edit/:id"        : "postEdit",
+      "post/read/:id"        : "postRead",
       "preset/:pwResetToken" : "resetPassword"
     },
 
-    initialize: function(options) {
-      _.bindAll(this, 'home','userList','userNew','resetPassword','postList','postNew');
-      this.vent = options.vent;
+    resetPassword: function(pwResetToken) {
+      App.vent.trigger('site:passreset', pwResetToken);
     },
 
-    home: function() {
-      this.vent.trigger('post:list');
-    },
-
+    // Users
     userList: function() {
-      this.vent.trigger('user:list');
+      App.vent.trigger('user:list');
     },
 
     userNew: function() {
-      this.vent.trigger('user:new');
+      App.vent.trigger('user:new');
     },
 
-    resetPassword: function(pwResetToken) {
-      this.vent.trigger('site:passreset', pwResetToken);
+    userEdit: function(id) {
+      App.vent.trigger('user:edit', null, {id: id});
     },
 
+    // Posts:
     postList: function() {
-      this.vent.trigger('post:list');
+      App.vent.trigger('post:list');
     },
 
     postNew: function() {
-      this.vent.trigger('post:new');
+      App.vent.trigger('post:new');
+    },
+
+    postEdit: function(id) {
+      App.vent.trigger('post:edit', null, {id: id});
+    },
+
+    postRead: function(id) {
+      App.vent.trigger('post:read', null, {id: id});
     }
 
   });
-
-  return Router;
 });

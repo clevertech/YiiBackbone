@@ -1,32 +1,25 @@
 define([
-  'jquery', 
-  'underscore', 
+  'jquery',
+  'underscore',
   'backbone',
   'text!templates/alert.html',
-  'bootstrapAlert',
-  ], function($, _, Backbone, alertTemplate) {
+  'bootstrapAlert'
+], function($, _, Backbone, template) {
 
-  var AlertView = Backbone.View.extend({
-
-    className: "row",
-
-    alertTemplate: _.template(alertTemplate),
-
+  return Backbone.View.extend({
+    template: _.template(template),
     events: {
-      "click .close" : "close",
+      "click .close" : "close"
     },
+
     initialize: function(options) {
-      _.bindAll(this, 'render');
-
       this.msg = options.msg;
-      this.type = options.type; 
-
+      this.type = options.type;
       this.$el.alert();
     },
 
     render: function() {
-      this.$el.html(this.alertTemplate({msg: this.msg, type: this.type}));
-      return this;
+      this.$el.html(this.template({msg: this.msg, type: this.type}));
     },
 
     close: function() {
@@ -34,7 +27,8 @@ define([
       this.undelegateEvents();
     },
 
+    onShow: function() {
+      $('html, body').animate({ scrollTop: 0 }, 'slow');
+    }
   });
-
-  return AlertView;
 });

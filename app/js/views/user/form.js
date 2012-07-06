@@ -1,36 +1,28 @@
 define([
-  'jquery', 
-  'underscore', 
+  'jquery',
+  'underscore',
   'backbone',
   'modelbinding',
   'text!templates/user/form.html',
-  'views/alert',
-  ], function($, _, Backbone, ModelBinding, formTemplate, AlertView) {
+  'app'
+  ], function($, _, Backbone, ModelBinding, template, App) {
 
   var UserFormView = Backbone.View.extend({
-
-    formTemplate : _.template(formTemplate),
-
+    template : _.template(template),
     events: {
       'click button[name=save]'   : 'save',
-      'click button[name=cancel]' : 'cancel',
+      'click button[name=cancel]' : 'cancel'
     },
 
     initialize: function(options) {
       _.bindAll(this, 'render','success','close');
-
-      this.vent = options.vent;
       this.model.on('error', this.error);
       this.model.on('sync', this.success);
     },
 
     render: function() {
-      this.$el.html(this.formTemplate());
-
+      this.$el.html(this.template());
       ModelBinding.bind(this);
-      this.delegateEvents();
-
-      return this;
     },
 
     save: function(event) {
@@ -40,25 +32,23 @@ define([
 
     cancel: function(event) {
       event.preventDefault();
-
-      this.close();
-      this.vent.trigger('user:list');
+      App.vent.trigger('user:list');
     },
 
     success: function() {
-      var alertView = new AlertView({
-        msg: 'User "' + this.model.get('username') + '" updated.',
-        type: 'success',
-      });
-      $('.head').html(alertView.render().el); 
 
-      this.close();
-      this.vent.trigger('user:list');
+      App.vent.trigger('alert', {
+        msg: 'User "' + this.model.get('username') + '" updated.',
+        type: 'success'
+      });
+      App.vent.trigger('post:list');
     },
 
     error: function(model, response) {
-      var alertView = new AlertView({msg: response.responseText, type: 'error'});
-      $('.head').html(alertView.render().el); 
+      App.vent.trigger('alert', {
+        msg: response.responseText ? response.responseText : response.statusText,
+        type: 'error'
+      });
     },
 
     close: function() {
@@ -67,7 +57,7 @@ define([
       this.model.off('sync', this.success);
       this.undelegateEvents();
       this.remove();
-    },
+    }
 
   });
 

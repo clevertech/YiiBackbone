@@ -12,7 +12,13 @@
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/app/css/jquery-ui-1.8.18.custom.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/app/css/all.css" />
     <script data-main="app/js/main" src="<?php echo Yii::app()->request->baseUrl; ?>/app/js/libs/require/require.js"></script>
-
+	<script type="text/javascript">
+		define('onLoad', ['app'], function(App) {
+			App.addInitializer(function() {
+				App.vent.trigger('webUser:init', <?php echo Yii::app()->user->toJSON(); ?>);
+			});
+		});
+	</script>
     <!-- HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -27,8 +33,8 @@
           <div id="loader" class="loading"></div>
           <!-- <a id="logo" href="#">YiiBackbone</a> -->
           <a class="brand" href="#">Scherago</a>
-          <div id="search"></div>
-          <ul class="nav pull-right"></ul>
+		  <div id="search-container"></div>
+		  <div id="nav-menu" class="pull-right"></div>
           <div class="login"></div>
         </div>
       </div>

@@ -5,7 +5,7 @@ define([
   'marionette'
 ], function($, _, Backbone, Marionette) {
 
-  var App = new Marionette.Application;
+  var App = new Backbone.Marionette.Application;
   App.addRegions({
     mainRegion: '.main',
     headRegion: '.head'

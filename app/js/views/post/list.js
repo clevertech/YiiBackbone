@@ -1,69 +1,42 @@
 define([
-  'jquery', 
-  'underscore', 
+  'jquery',
+  'underscore',
   'backbone',
   'views/post/item',
   'text!templates/post/list.html',
-  'views/alert',
-  ], function($, _, Backbone, PostItemView, listTemplate, AlertView) {
+  'app'
+  ], function($, _, Backbone, PostItemView, template, App) {
 
-  var PostListView = Backbone.View.extend({
-
-    listTemplate : _.template(listTemplate),
-
-    events: {
-      'click .new' : 'new',
-    },
+  return Backbone.View.extend({
+    template : _.template(template),
 
     initialize: function(options) {
-      _.bindAll(this, 'render','renderItem','list','close');
-
+      _.bindAll(this, 'render','renderItem', 'close');
       this.user = options.user;
-
-      this.vent = options.vent;
-      this.vent.on('post:list', this.list);
-
-      this.collection.on('reset', this.render);
-      this.collection.on('sync',  this.render);
-      this.collection.on('error', this.error);
-
+      this.collection.on('error', this.error, this)
     },
 
     render: function() {
-      this.$el.html(this.listTemplate());
+      this.$el.html(this.template());
       this.collection.each(this.renderItem);
-
-      this.delegateEvents();
-      return this;
     },
 
     renderItem: function(model) {
-      var itemView = new PostItemView({model:model, vent:this.vent});
+      var itemView = new PostItemView({model:model});
       this.$('ul').append(itemView.el);
-    },
-    
-    list: function() {
-      $('.main').html(this.el);
-      this.collection.fetch();
-      Backbone.history.navigate('post/list');
-    },
-
-    new: function(event) {
-      event.preventDefault();
-      this.vent.trigger('post:new');
     },
 
     error: function(model, response) {
-      var alertView = new AlertView({msg: response.responseText, type: 'error'});
-      $('.head').html(alertView.render().el); 
+      App.vent.trigger('alert', {
+        msg: response.responseText ? response.responseText : response.statusText,
+        type: 'error'
+      });
     },
 
     close: function() {
       this.undelegateEvents();
+      this.collection.off('error', this.error);
       this.remove();
-    },
-
+    }
   });
-
-  return PostListView;
 });

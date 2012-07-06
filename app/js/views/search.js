@@ -1,11 +1,12 @@
 define([
-  'jquery', 
-  'underscore', 
+  'jquery',
+  'underscore',
   'backbone',
-  'visualsearch',
-  ], function($, _, Backbone) {
+  'app',
+  'visualsearch'
+  ], function($, _, Backbone, App) {
 
-  var SearchView = Backbone.View.extend({
+  return Backbone.View.extend({
 
     initialize: function(options) {
       _.bindAll(this, 'render','search','valueMatches','facetMatches');
@@ -15,35 +16,27 @@ define([
       this.posts = options.posts;
       this.comments = options.comments;
 
-      // jQuerry deferred collection fetch 
-      var self = this;
-      $.when(this.posts.fetch())
-       .then(function() {
-          $.when(self.comments.fetch())
-           .then(function() {
-              var visualSearch = VS.init({
-                container  : $('#search'),
-                query      : '',
-                unquotable : ['text'],
-                callbacks  : {
-                  search       : self.search,
-                  valueMatches : self.valueMatches,
-                  facetMatches : self.facetMatches,
-                }
-              });
-            });
-        });
+      var visualSearch = VS.init({
+        container  : this.$el,
+        query      : '',
+        unquotable : ['text'],
+        callbacks  : {
+          search       : this.search,
+          valueMatches : this.valueMatches,
+          facetMatches : this.facetMatches
+        }
+      });
+      $('#search-container').html(this.el);
     },
 
     search: function(query, searchCollection) {
-      var self = this;
       searchCollection.each(function(item) {
         switch(item.get('category')) {
           case 'Post':
-            var post = self.posts.find(function(model) {
+            var post = App.posts.find(function(model) {
               return model.get('title') == item.get('value');
             });
-            self.vent.trigger('post:open', post);
+            App.vent.trigger('post:open', post);
             break;
         }
       });
@@ -52,7 +45,8 @@ define([
     valueMatches: function(category, searchTerm, callback) {
       switch (category) {
         case 'Post':
-          callback(this.posts.pluck('title'));
+          this.loadPosts();
+          callback(App.posts.pluck('title'));
           break;
         }
     },
@@ -61,7 +55,9 @@ define([
       callback(['Post']);
     },
 
+    loadPosts: _.once(function() {
+      if (!App.posts.length) App.posts.fetch();
+    })
   });
 
-  return SearchView;
 });

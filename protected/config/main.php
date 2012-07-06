@@ -31,6 +31,7 @@ return CMap::mergeArray (array(
 	// application components
 	'components'=>array(
 		'user'=>array(
+			'class' => 'WebUser',
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
@@ -38,28 +39,28 @@ return CMap::mergeArray (array(
 			'urlFormat'=>'path',
 			'rules'=>array(
 				// REST patterns
-				array('site/login'      , 'pattern'=>'api/site/login'       , 'verb'=>'POST'), 
-				array('site/logout'     , 'pattern'=>'api/site/logout'      , 'verb'=>'POST'), 
-				array('site/forgotpass' , 'pattern'=>'api/site/forgotpass'  , 'verb'=>'POST'), 
-				array('site/passreset'  , 'pattern'=>'api/site/passreset'   , 'verb'=>'POST'), 
+				array('site/login'      , 'pattern'=>'api/site/login'       , 'verb'=>'POST'),
+				array('site/logout'     , 'pattern'=>'api/site/logout'      , 'verb'=>'POST'),
+				array('site/forgotpass' , 'pattern'=>'api/site/forgotpass'  , 'verb'=>'POST'),
+				array('site/passreset'  , 'pattern'=>'api/site/passreset'   , 'verb'=>'POST'),
 
-				array('user/list'       , 'pattern'=>'api/user'             , 'verb'=>'GET'), 
-				array('user/create'     , 'pattern'=>'api/user'             , 'verb'=>'POST'), 
-				array('post/read'       , 'pattern'=>'api/user/<id:\d+>'    , 'verb'=>'GET'), 
-				array('user/update'     , 'pattern'=>'api/user/<id:\d+>'    , 'verb'=>'PUT'), 
-				array('user/delete'     , 'pattern'=>'api/user/<id:\d+>'    , 'verb'=>'DELETE'), 
+				array('user/list'       , 'pattern'=>'api/user'             , 'verb'=>'GET'),
+				array('user/create'     , 'pattern'=>'api/user'             , 'verb'=>'POST'),
+				array('post/read'       , 'pattern'=>'api/user/<id:\d+>'    , 'verb'=>'GET'),
+				array('user/update'     , 'pattern'=>'api/user/<id:\d+>'    , 'verb'=>'PUT'),
+				array('user/delete'     , 'pattern'=>'api/user/<id:\d+>'    , 'verb'=>'DELETE'),
 
-				array('post/list'       , 'pattern'=>'api/post'             , 'verb'=>'GET'), 
-				array('post/create'     , 'pattern'=>'api/post'             , 'verb'=>'POST'), 
-				array('post/read'       , 'pattern'=>'api/post/<id:\d+>'    , 'verb'=>'GET'), 
-				array('post/update'     , 'pattern'=>'api/post/<id:\d+>'    , 'verb'=>'PUT'), 
-				array('post/delete'     , 'pattern'=>'api/post/<id:\d+>'    , 'verb'=>'DELETE'), 
+				array('post/list'       , 'pattern'=>'api/post'             , 'verb'=>'GET'),
+				array('post/create'     , 'pattern'=>'api/post'             , 'verb'=>'POST'),
+				array('post/read'       , 'pattern'=>'api/post/<id:\d+>'    , 'verb'=>'GET'),
+				array('post/update'     , 'pattern'=>'api/post/<id:\d+>'    , 'verb'=>'PUT'),
+				array('post/delete'     , 'pattern'=>'api/post/<id:\d+>'    , 'verb'=>'DELETE'),
 
-				array('comment/list'    , 'pattern'=>'api/comment'          , 'verb'=>'GET'), 
-				array('comment/create'  , 'pattern'=>'api/comment'          , 'verb'=>'POST'), 
-				array('comment/read'    , 'pattern'=>'api/comment/<id:\d+>' , 'verb'=>'GET'), 
-				array('comment/update'  , 'pattern'=>'api/comment/<id:\d+>' , 'verb'=>'PUT'), 
-				array('comment/delete'  , 'pattern'=>'api/comment/<id:\d+>' , 'verb'=>'DELETE'), 
+				array('comment/list'    , 'pattern'=>'api/comment'          , 'verb'=>'GET'),
+				array('comment/create'  , 'pattern'=>'api/comment'          , 'verb'=>'POST'),
+				array('comment/read'    , 'pattern'=>'api/comment/<id:\d+>' , 'verb'=>'GET'),
+				array('comment/update'  , 'pattern'=>'api/comment/<id:\d+>' , 'verb'=>'PUT'),
+				array('comment/delete'  , 'pattern'=>'api/comment/<id:\d+>' , 'verb'=>'DELETE'),
 
 				// Other controllers
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',

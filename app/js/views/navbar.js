@@ -1,58 +1,38 @@
 define([
-  'jquery', 
-  'underscore', 
+  'jquery',
+  'underscore',
   'backbone',
   'collections/user',
   'views/user/list',
   'views/alert',
-  'text!templates/navbar/dropdown.html',
-  ], function($, _, Backbone, UserCollection, UserListView, AlertView, dropdownTemplate) {
+  'text!templates/navbar/dropdown.html'
+  ], function($, _, Backbone, UserCollection, UserListView, AlertView, template) {
 
-  var NavbarView = Backbone.View.extend({
-
-    el: ".navbar",
-
-    dropdownTemplate : _.template(dropdownTemplate),
-
+  return Backbone.View.extend({
+    template : _.template(template),
     events: {
-      "click #logout"   : "logout",
-      "click #userlist" : "userList",
-      "click #postList" : "postList",
+      "click #logout"   : "logout"
     },
 
-    initialize: function(options) {
-      _.bindAll(this, 'render','logout','userList','close');
-
-      this.vent = options.vent;
-      this.vent.on('user:navbar', this.render);
+    initialize: function() {
+      this.model.on('destroy', this.close, this);
     },
 
-    render: function(model) {
-      this.$('.nav').html(this.dropdownTemplate(model.toJSON()));
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      $('#nav-menu').html(this.el);
       return this;
     },
 
     logout: function(event) {
       event.preventDefault();
-      this.vent.trigger('site:logout');
-    },
-
-    userList: function(event) {
-      event.preventDefault();
-      this.vent.trigger('user:list');
-    },
-
-    postList: function(event) {
-      event.preventDefault();
-      this.vent.trigger('post:list');
+      App.vent.trigger('logout');
     },
 
     close: function() {
       this.undelegateEvents();
       this.remove();
-    },
-
+    }
   });
 
-  return NavbarView;
 });
