@@ -38,7 +38,7 @@
           <!-- <a id="logo" href="#">YiiBackbone</a> -->
           <a class="brand" href="#">Scherago</a>
 		  <div id="search-container"></div>
-		  <div id="nav-menu login-required" class="pull-right"></div>
+		  <div id="nav-menu" class="pull-right login-required"></div>
           <div class="login guest-only"></div>
         </div>
       </div>
