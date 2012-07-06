@@ -22,12 +22,26 @@ class Controller extends CController
 	 */
 	public $breadcrumbs=array();
 
+	public function filters() {
+		return array(
+			'accessControl',
+		);
+	}
+
+	// Define access control, actions, for entire site
+	public function accessRules() {
+		return array(
+			array('allow', 'users' => array('@')),
+			array('deny', 'users' => array('*')),
+		);
+	}
+
 	/**
 	 * Send raw HTTP response
 	 * @param int $status HTTP status code
 	 * @param string $body The body of the HTTP response
 	 * @param string $contentType Header content-type
-	 * @return HTTP response 
+	 * @return HTTP response
 	 */
 	protected function sendResponse($status = 200, $body = '', $contentType = 'application/json')
 	{
@@ -36,11 +50,11 @@ class Controller extends CController
 		header($statusHeader);
 		// Set the content type
 		header('Content-type: ' . $contentType);
-	 
+
 		echo $body;
 		Yii::app()->end();
 	}
-	
+
 	/**
 	 * Return the http status message based on integer status code
 	 * @param int $status HTTP status code
@@ -95,24 +109,4 @@ class Controller extends CController
 	    return (isset($codes[$status])) ? $codes[$status] : '';
 	}
 
-	protected function checkAuth()
-	{
-		$cookie = Yii::app()->request->cookies['_yiibackbone'];
-
-		if (!$cookie) 
-			return false;
-
-		list($username,$token) = explode(',',$cookie->value);
-
-		// current time - 2 hours (two hours in the past) 
-		$timeCheck = date('Y-m-d H:i:s', time()-(60*60*2));
-		if (Yii::app()->db->createCommand()
-			->select('id')
-			->from('cookie')
-			->where("username=:u AND token=:t AND create_date > :c", array(':u'=>$username,':t'=>$token,':c'=>$timeCheck))
-			->queryRow())
-			return true;
-		else
-			return false;
-	}
 }

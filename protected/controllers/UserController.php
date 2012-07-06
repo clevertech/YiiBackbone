@@ -1,10 +1,11 @@
 <?php
-class UserController extends Controller 
+class UserController extends Controller
 {
+
 	public function actionRead($id)
 	{
-		$model = User::model()->findByPk($id);
-
+		if (null === ($model = User::model()->findByPk($id)))
+			throw new CHttpException(404);
 		$this->sendResponse(200, CJSON::encode($model));
 	}
 
@@ -13,14 +14,11 @@ class UserController extends Controller
 		$models = User::model()->findAll(array(
 			'select'=>'id, fname, lname, username, email, role',
 		));
-
 		$this->sendResponse(200, CJSON::encode($models));
 	}
 
-	public function actionCreate() 
+	public function actionCreate()
 	{
-		if (!$this->checkAuth())
-			$this->sendResponse(401);
 
 		$data = CJSON::decode(file_get_contents('php://input'));
 
@@ -43,12 +41,10 @@ class UserController extends Controller
 
 	public function actionUpdate($id)
 	{
-		if (!$this->checkAuth())
-			$this->sendResponse(401);
-
+		if (null === ($model = User::model()->findByPk($id)))
+			throw new CHttpException(404);
 		$data = CJSON::decode(file_get_contents('php://input'));
 
-		$model = User::model()->findByPk($id);
 		$model->fname = $data['fname'];
 		$model->lname = $data['lname'];
 		$model->email = $data['email'];
@@ -69,19 +65,11 @@ class UserController extends Controller
 
 	public function actionDelete($id)
 	{
-		if (!$this->checkAuth())
-			$this->sendResponse(401);
+		if (null === ($model = User::model()->findByPk($id)))
+			throw new CHttpException(404);
 
-		$data = CJSON::decode(file_get_contents('php://input'));
-
-		$model = User::model()->findByPk($id);
-
-		if (!$model->delete()) {
-			$errors = array();
-			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
-			$this->sendResponse(500, implode("<br />", $errors));
-		} 
-
+		if (!$model->delete())
+			throw new CException();
 		$this->sendResponse(200);
 	}
 }

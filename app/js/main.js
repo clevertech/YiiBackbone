@@ -32,7 +32,7 @@ requirejs.config({
     bootstrapDropdown    : 'libs/bootstrap/bootstrap-dropdown',
     bootstrapModal       : 'libs/bootstrap/bootstrap-modal',
     bootstrapTab         : 'libs/bootstrap/bootstrap-tab',
-    bootstrapTypeahead   : 'libs/bootstrap/bootstrap-typeahead',
+    bootstrapTypeahead   : 'libs/bootstrap/bootstrap-typeahead'
     // bootstrapWysihtml5   : 'libs/bootstrap/bootstrap-wysihtml5',
   },
   shim: {
@@ -96,7 +96,10 @@ define([
   $.ajaxSetup({
     dataFilter: function(data, dataType) {
       if ('Login Required!' === data) {
-        window.location.replace('/#login');
+        App.vent.trigger('alert', {
+          msg: 'Login Required',
+          type: 'error'
+        });
         // Return something not json parsable to
         // stop event triggering and ajax loading.
         // Looking for better solution.
@@ -112,10 +115,10 @@ define([
     Backbone.history.start();
   });
 
-
-  // JS sugar for all dropdowns with this class
+  // Initialize search
   App.addInitializer(function (options) {
-    $('.dropdown-toggle').dropdown();
+    var searchView = new SearchView({});
+    searchView.render();
   });
 
   // Cross app collections
@@ -125,31 +128,32 @@ define([
 
   // Web User
   App.vent.on('webUser:init', function(data) {
+    $('body').addClass('guest').removeClass('logged-in');
 
     var model = data instanceof WebUser ? data : new WebUser(data);
     var navbarView = new NavbarView({model: model});
-
     navbarView.render();
-    var searchView = new SearchView({});
-    searchView.render();
+
     model.on('destroy', searchView.close, searchView);
     model.on('destroy',function() {
       navbarView.close();
-      App.vent.trigger('login');
+      App.vent.trigger('webUser:guest');
     });
 
     model.on('destroy', function() {App.vent.trigger('login')});
     this.vent.on('logout', model.destroy, model);
   }, App);
 
-  App.vent.on('login', function() {
-    Backbone.history.navigate('/#login');
+  App.vent.on('webUser:guest', function() {
+    $('body').removeClass('logged-in').addClass('guest');
+
     var model = new WebUser;
-    var loginView = new LoginView({model: model});
-    this.mainRegion.show(loginView);
+    var view = new LoginView({model: model});
+    view.render();
+
     model.on('login', function() {
       App.vent.trigger('webUser:init', this);
-      App.vent.trigger('order:new');
+      App.vent.trigger('post:list');
     }, model);
   }, App);
 
@@ -200,10 +204,7 @@ define([
 
   App.vent.on('user:form', function (model) {
     $.when(
-//      this.accounts.length || this.accounts.fetch(),
-//      this.publications.length || this.publications.fetch(),
-//      this.rateTypes.length || this.rateTypes.fetch(),
-//      this.representatives.length || this.representatives.fetch()
+//      fetch some data needed for view
     ).done(function () {
         var view = new UserForm({model: model});
         App.mainRegion.show(view);
@@ -211,14 +212,14 @@ define([
   }, App);
 
   // Posts
+
   App.vent.on('post:list', function () {
     $.when(
       this.posts.length || this.posts.fetch()
     ).done(function() {
         Backbone.history.navigate('post/list');
         var view = new PostListView({
-          collection : App.posts,
-//          user       : this.loginModel,
+          collection : App.posts
         });
         App.mainRegion.show(view);
       });
@@ -244,10 +245,7 @@ define([
 
   App.vent.on('post:form', function (model) {
     $.when(
-//      this.accounts.length || this.accounts.fetch(),
-//      this.publications.length || this.publications.fetch(),
-//      this.rateTypes.length || this.rateTypes.fetch(),
-//      this.representatives.length || this.representatives.fetch()
+//      fetch some data needed for view
     ).done(function () {
         var view = new PostForm({model: model});
         App.mainRegion.show(view);
@@ -269,93 +267,7 @@ define([
 
   }, App);
 
-  var TT = Backbone.View.extend({
-
-    initialize: function() {
-      _.bindAll(this,'initSearch','initViews','checkAuth');
-
-      // declare main custom event object
-      this.vent = _.extend({}, Backbone.Events);
-
-      this.users    = new UserCollection;
-      this.users.fetch();
-
-      this.posts    = new PostCollection;
-      this.comments = new CommentCollection;
-
-      // Initialize login view
-      this.loginModel = new LoginModel;
-
-      this.initViews();
-      this.initSearch();
-      this.checkAuth();
-    },
-
-    checkAuth: function() {
-      var self = this;
-
-      // Check user authentication
-      var params = this.getCookieParams();
-      if (params) {
-        self.loginModel.set('username', params.username);
-        self.loginModel.set('token', params.token);
-        self.loginModel.set('authenticated', true);
-      }
-    },
-
-    initSearch: function() {
-      // Initialize main search
-      var self = this;
-      domReady(function() {
-        var searchView = new SearchView({
-          posts    : self.posts,
-          comments : self.comments,
-          vent     : self.vent,
-        });
-      });
-    },
-
-    initViews: function() {
-      // Login view
-      var loginView = new LoginView({model:this.loginModel, vent:this.vent});
-      loginView.render();
-
-      // Navbar view
-      var navbarView = new NavbarView({vent:this.vent});
-
-      // List views
-      var userListView    = new UserListView({collection:this.users, vent:this.vent});
-      var postListView = new PostListView({
-        collection : this.posts,
-        user       : this.loginModel,
-        vent       : this.vent,
-      });
-      var commentListView = new CommentListView({collection:this.comments, vent:this.vent});
-
-      // Form views
-      var postFormView = new PostFormView({
-        model : new PostModel,
-        user  : this.loginModel,
-        vent  : this.vent,
-      });
-      var commentFormView = new CommentFormView({model: new CommentModel, vent:this.vent});
-    },
-
-
-    getCookieParams: function() {
-      if ($.cookie('_yiibackbone')) {
-        var data = $.cookie('_yiibackbone').split(',');
-        var params = {
-          username: data[0],
-          token: data[1],
-        }
-        return params;
-      }
-    }
-
-  });
-
-  // Load code defined on php side in main layout and start an App.
+  // Load code defined on php side in main layout and start the Application.
   require(['onLoad']);
   App.start();
 });

@@ -1,84 +1,80 @@
 <?php
-class CommentController extends Controller 
+class CommentController extends Controller
 {
+
+	public function accessRules()
+	{
+		return array_merge(
+			array(array('allow',
+				'actions'=>array('read', 'list'),
+				'users'=>array('?')
+			)),
+			parent::accessRules()
+		);
+	}
+
 	public function actionRead($id)
 	{
-		$model = Comment::model()->findByPk($id);
-
+		if (null === ($model = Comment::model()->findByPk($id)))
+			throw new CHttpException(404);
 		$this->sendResponse(200, CJSON::encode($model));
 	}
 
 	public function actionList()
 	{
-		// You can use that for returning a set of models 
-		// if (isset($ids)) {
-			// $ids = explode(';', $ids);
-			// $models = Comment::model()->findAllByPk($ids);
-		// } else
-
 		$models = Comment::model()->findAll();
 
 		$this->sendResponse(200, CJSON::encode($models));
 	}
 
-	public function actionCreate() 
+	public function actionCreate()
 	{
-		if (!$this->checkAuth())
-			$this->sendResponse(401);
-
 		$data = CJSON::decode(file_get_contents('php://input'));
 
 		$model = new Comment();
 		if (isset($data['content']))
-			$model->content = $data['content']; 
+			$model->content = $data['content'];
 		if (isset($data['post_id']))
-			$model->post_id = $data['post_id']; 
+			$model->post_id = $data['post_id'];
 		if (isset($data['user_id']))
-			$model->post_id = $data['user_id']; 
+			$model->post_id = $data['user_id'];
 
 		if (!$model->save()) {
 			$errors = array();
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
 			throw new CException(implode("\n", $errors));
-		} 
-		
+		}
+
 		$this->sendResponse(200);
 	}
 
 	public function actionUpdate($id)
 	{
-		if (!$this->checkAuth())
-			$this->sendResponse(401);
+		if (null === ($model = Comment::model()->findByPk($id)))
+			throw new CHttpException(404);
 
 		$data = CJSON::decode(file_get_contents('php://input'));
 
-		$model = Comment::model()->findByPk($id);
-		$model->content = $data['content']; 
-		$model->post_id = $data['post_id']; 
-		$model->user_id = $data['user_id']; 
+		$model->content = $data['content'];
+		$model->post_id = $data['post_id'];
+		$model->user_id = $data['user_id'];
 
 		if (!$model->save()) {
 			$errors = array();
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
 			throw new CException(implode("\n", $errors));
-		} 
-		
+		}
+
 		$this->sendResponse(200);
 	}
 
 	public function actionDelete($id)
 	{
-		if (!$this->checkAuth())
-			$this->sendResponse(401);
+		if (null === ($model = Comment::model()->findByPk($id)))
+			throw new CHttpException(404);
 
-		$model = Comment::model()->findByPk($id);
-
-		if (!$model->delete()) {
-			$errors = array();
-			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
-			throw new CException(implode("\n", $errors));
-		} 
-		
+		if (!$model->delete())
+			throw new CException();
 		$this->sendResponse(200);
 	}
 }

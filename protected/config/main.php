@@ -39,10 +39,11 @@ return CMap::mergeArray (array(
 			'urlFormat'=>'path',
 			'rules'=>array(
 				// REST patterns
-				array('site/login'      , 'pattern'=>'api/site/login'       , 'verb'=>'POST'),
-				array('site/logout'     , 'pattern'=>'api/site/logout'      , 'verb'=>'POST'),
-				array('site/forgotpass' , 'pattern'=>'api/site/forgotpass'  , 'verb'=>'POST'),
-				array('site/passreset'  , 'pattern'=>'api/site/passreset'   , 'verb'=>'POST'),
+				array('site/login'         , 'pattern'=>'api/webUser'              , 'verb'=>'POST')   ,
+				array('site/login'         , 'pattern'=>'api/webUser'              , 'verb'=>'PUT')   ,
+				array('site/logout'        , 'pattern'=>'api/webUser'              , 'verb'=>'DELETE') ,
+				array('site/forgotpass'    , 'pattern'=>'api/site/forgotpass'      , 'verb'=>'POST')   ,
+				array('site/passreset'     , 'pattern'=>'api/site/passreset'       , 'verb'=>'POST')   ,
 
 				array('user/list'       , 'pattern'=>'api/user'             , 'verb'=>'GET'),
 				array('user/create'     , 'pattern'=>'api/user'             , 'verb'=>'POST'),

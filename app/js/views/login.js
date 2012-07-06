@@ -1,81 +1,80 @@
 define([
-  'jquery', 
-  'underscore', 
+  'jquery',
+  'underscore',
   'backbone',
-  'collections/user',
-  'views/user/list',
-  'views/alert',
+  'app',
   'views/modal/forgot-pass',
   'views/modal/new-pass',
-  'text!templates/navbar/login.html',
-  ], function($, _, Backbone, UserCollection, UserListView, AlertView, ModalForgotPassView, ModalNewPassView, loginFormTemplate) {
+  'text!templates/navbar/login.html'
+  ], function($, _, Backbone, App, ModalForgotPassView, ModalNewPassView, template) {
 
-  var LoginView = Backbone.View.extend({
-
-    el: ".login",
-
-    loginFormTemplate : _.template(loginFormTemplate),
-
+  return Backbone.View.extend({
+    template : _.template(template),
     events: {
-      "click button[name=login]" : "login",
-      "click #forgot-pass"       : "forgotPass",
+      "click #forgot-pass"       : "forgotPass"
     },
 
-    initialize: function(options) {
-      _.bindAll(this, 'render','checkAuth','logout','sendReset','newPassword','resetPassword','close','error');
+    initialize: function() {
+      _.bindAll(this, 'render','sendReset','newPassword','resetPassword','close','error');
 
-      this.vent = options.vent;
-      this.vent.on('site:logout', this.logout);
-      this.vent.on('site:passreset', this.newPassword);
+      App.vent.on('site:passreset', this.newPassword);
 
-      this.model.on('change:authenticated', this.checkAuth);
-      this.model.on('error', this.error);
-      this.model.on('modal:forgotpass', this.sendReset);
-      this.model.on('modal:newpass', this.resetPassword);
+      this.model.on('change:authenticated', this.checkAuth, this);
+      this.model.on('error', this.error, this);
+      this.model.on('modal:forgotpass', this.sendReset, this);
+      this.model.on('modal:newpass', this.resetPassword, this);
     },
 
     render: function() {
-      this.$el.html(this.loginFormTemplate());
-      return this;
-    },
-
-    checkAuth: function(model,value) {
-      if (value) { 
-        this.$el.html('');
-        this.vent.trigger('user:navbar', model);
-      } else this.render();
-    },
-
-    login: function(event) {
-      event.preventDefault();
-      this.model.url = "api/site/login"; 
-      this.model.save({
-        username: this.$("input[name=username]").val(),
-        password: this.$("input[name=password]").val()
+      this.$el.html(this.template());
+      var model = this.model;
+      var view = this;
+      this.$('form').on('submit', function() {
+        model.set({
+          username: view.$("input[name=username]").val(),
+          password: view.$("input[name=password]").val()
+        });
+        $.ajax({
+          type: 'POST',
+          url: model.url,
+          dataType: 'json',
+          contentType:'application/json',
+          data: JSON.stringify(_.extend(model.toJSON(), {ajax: 'login-form'})),
+          success: function(data) {
+            if (data) {
+              var error = '';
+              _.each(data, function(element) {
+                error += '<li>' + element + '</li>';
+              });
+              error = '<ul>' + error + '</ul>';
+              App.vent.trigger('alert', {
+                msg: error,
+                type: 'error'
+              });
+            } else {
+              model.save(null, {
+                success: function() {
+                  model.trigger('login');
+                }
+              });
+            }
+          }
+        });
+        return false;
       });
-    },
-
-    logout: function() {
-      this.model.url = "api/site/logout"; 
-      this.model.save({
-        username : this.model.get('username'),
-        token    : this.model.get('token'),
-      });
-      
-      // TODO refactor, append() or html() in render() maybe 
-      // Clean DOM 
-      $('.nav').html('');
+      $('.login').html(this.el);
     },
 
     // Password reset functions:
     forgotPass: function(event) {
       event.preventDefault();
-      this.modalForgotPassView = new ModalForgotPassView({model:this.model, header: "Password Reset"});
-      $('.head').html(this.modalForgotPassView.render().el); 
+      alert('In progress');
+//      this.modalForgotPassView = new ModalForgotPassView({model:this.model, header: "Password Reset"});
+//      $('.head').html(this.modalForgotPassView.render().el);
     },
 
     sendReset: function() {
-      this.model.url = "api/site/forgotpass"; 
+      this.model.url = "api/site/forgotpass";
       this.model.save({
         username: this.modalForgotPassView.$("input[name=username]").val()
       });
@@ -84,29 +83,30 @@ define([
     newPassword: function(pwResetToken) {
       this.pwResetToken = pwResetToken;
       this.modalNewPassView = new ModalNewPassView({model:this.model, header: "New Password"});
-      $('.head').html(this.modalNewPassView.render().el); 
+      $('.head').html(this.modalNewPassView.render().el);
       $('#modal').modal();
     },
 
     resetPassword: function() {
-      this.model.url = "api/site/passreset"; 
+      this.model.url = "api/site/passreset";
       this.model.save({
         password: this.modalNewPassView.$("input[name=password]").val(),
         pw_reset_token: this.pwResetToken
       });
     },
 
+    error: function(model, response) {
+      App.vent.trigger('alert', {
+        msg: response.responseText,
+        type: 'error'
+      });
+    },
+
     close: function() {
       this.undelegateEvents();
+      this.off(null, null, this);
       this.remove();
-    },
-
-    error: function(model, response) {
-      var alertView = new AlertView({msg: response.responseText, type: "error"});
-      $('.head').html(alertView.render().el); 
-    },
-
+    }
   });
 
-  return LoginView;
 });

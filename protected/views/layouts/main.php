@@ -14,9 +14,13 @@
     <script data-main="app/js/main" src="<?php echo Yii::app()->request->baseUrl; ?>/app/js/libs/require/require.js"></script>
 	<script type="text/javascript">
 		define('onLoad', ['app'], function(App) {
-			App.addInitializer(function() {
-				App.vent.trigger('webUser:init', <?php echo Yii::app()->user->toJSON(); ?>);
-			});
+			<?php if (Yii::app()->user->isGuest): ?>
+				App.vent.trigger('webUser:guest');
+			<?php else: ?>
+				App.addInitializer(function() {
+					App.vent.trigger('webUser:init', <?php echo Yii::app()->user->toJSON(); ?>);
+				});
+			<?php endif; ?>
 		});
 	</script>
     <!-- HTML5 shim, for IE6-8 support of HTML elements -->
@@ -34,8 +38,8 @@
           <!-- <a id="logo" href="#">YiiBackbone</a> -->
           <a class="brand" href="#">Scherago</a>
 		  <div id="search-container"></div>
-		  <div id="nav-menu" class="pull-right"></div>
-          <div class="login"></div>
+		  <div id="nav-menu login-required" class="pull-right"></div>
+          <div class="login guest-only"></div>
         </div>
       </div>
     </div>

@@ -1,8 +1,6 @@
 ul.tabs {
 	margin-bottom: 0;
-
 	li {
-
 		a {
 			outline: none;
 		}
@@ -17,7 +15,6 @@ ul.tabs {
 		}
 
 	}
-
 }
 
 div.tab-content {
@@ -34,4 +31,12 @@ div.tab-content {
 .typeahead.dropdown-menu {
   min-width: inherit;
   max-width: inherit;
+}
+
+body.logged-in .guest-only {
+  display: none;
+}
+
+body.guest .login-required {
+  display: none;
 }

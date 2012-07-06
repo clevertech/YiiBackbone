@@ -2,6 +2,17 @@
 
 class SiteController extends Controller
 {
+
+	// Define access control
+	public function accessRules()
+	{
+		return array_merge(
+			array(array('allow', 'users'=>array('?'))),
+			// Include parent access rules
+			parent::accessRules()
+		);
+	}
+
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
@@ -30,82 +41,29 @@ class SiteController extends Controller
 	public function actionLogin()
 	{
 		$data = CJSON::decode(file_get_contents('php://input'));
-		
-		// Authenticate user credentials
-		$identity = new UserIdentity($data['username'], $data['password']);
-		
-		if ($identity->authenticate()) 
-		{
-			$user = $identity->getUser();
-			$token = RandHash::get();
-			$value = implode(',', array($user->username, $token));
+		if ($data) {
+			$model=new LoginForm;
+			$model->attributes = $data;
+			if(isset($data['ajax']) && $data['ajax']==='login-form')
+			{
+				if (!$model->validate())
+					echo CJSON::encode($model->errors);
 
-			$cookie = new CHttpCookie('_yiibackbone', $value);
-			$cookie->expire = time()+60*60*2; 
-			// Enable if SSL is set
-			// $cookie->secure = true; 
-			Yii::app()->request->cookies['_yiibackbone'] = $cookie;
-
-			$command = Yii::app()->db->createCommand();
-			$command->insert('cookie', array(
-				'username'=> $user->username,
-				'token'=>$token,
-				'create_date' => date('Y-m-d H:i:s', time()),
-			));
-
-			$login = (object) array();
-			$login->id = $user->id;
-			$login->fname = $user->fname;
-			$login->lname = $user->lname;
-			$login->email = $user->email;
-			$login->username = $user->username;
-			$login->token = $token;
-			$login->authenticated = true;
-
-			$this->sendResponse(200, CJSON::encode($login));
-		} 
-		else {
-			switch ($identity->errorCode) {
-				case UserIdentity::ERROR_USERNAME_INVALID:
-					$error = 'Incorrect username';
-					break;
-				case UserIdentity::ERROR_PASSWORD_INVALID:
-					$error = 'Incorrect password';
-					break;
-				case UserIdentity::ERROR_USER_IS_DELETED:
-					$error = 'This user is deleted';
-					break;
+				Yii::app()->end();
 			}
 
-			$this->sendResponse(401, CJSON::encode($error));
+			if($model->validate() && $model->login()) {
+				$this->sendResponse(200, Yii::app()->user->toJSON());
+			} else {
+				$this->sendResponse(401, CJSON::encode($model->errors));
+			}
 		}
 	}
 
-	public function actionLogout() 
+
+	public function actionLogout()
 	{
-		if (!$this->checkAuth())
-			$this->sendResponse(401);
-
-		$data = CJSON::decode(file_get_contents('php://input'));
-
-		$cookie = Yii::app()->request->cookies['_yiibackbone'];
-		list($username,$token) = explode(',',$cookie->value);
-
-		if ($username == $data['username'] && $token == $data['token']) {
-			unset(Yii::app()->request->cookies['_yiibackbone']);
-
-			if (Yii::app()->db->createCommand()
-				->delete('cookie','username=:u AND token=:t',array(':u'=>$username,':t'=>$token))) 
-			{
-				$login = (object) array();
-				$login->authenticated = false;
-				$this->sendResponse(200, CJSON::encode($login));
-			} else {
-				$this->sendResponse(500, CJSON::encode('There was a problem deleting the cookie record.'));
-			}
-		} else {
-			$this->sendResponse(400, CJSON::encode('Username and token doesn\'t match.'));
-		}
+		Yii::app()->user->logout();
 	}
 
 	public function actionForgotpass()
@@ -119,8 +77,8 @@ class SiteController extends Controller
 
 		Yii::app()->mailer->IsSMTP();
 
-		if ('private' == Yii::app()->params['env']) 
-		{ 
+		if ('private' == Yii::app()->params['env'])
+		{
 			Yii::app()->mailer->Host = 'smtp.gmail.com';
 			Yii::app()->mailer->SMTPAuth = true;     // turn on SMTP authentication
 			Yii::app()->mailer->SMTPSecure = "tls";
@@ -129,7 +87,7 @@ class SiteController extends Controller
 			Yii::app()->mailer->From = 'test@yiibackbone.loc';
 			Yii::app()->mailer->FromName = 'YiiBackbone';
 		}
-		else 
+		else
 		{
 			Yii::app()->mailer->Host = 'localhost';
 			Yii::app()->mailer->From = 'test@yiibackbone.noloc';
@@ -153,12 +111,12 @@ class SiteController extends Controller
 
 		$body = "
 Dear $user->fname $user->lname,
-        
-You are receiving this e-mail because you have requested to reset your password. 
 
-To complete the password reset process, please follow this link: 
-$pwResetLink 
-        
+You are receiving this e-mail because you have requested to reset your password.
+
+To complete the password reset process, please follow this link:
+$pwResetLink
+
 Regards,
 Admin
 ";

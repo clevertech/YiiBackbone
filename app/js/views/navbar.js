@@ -4,9 +4,9 @@ define([
   'backbone',
   'collections/user',
   'views/user/list',
-  'views/alert',
+  'app',
   'text!templates/navbar/dropdown.html'
-  ], function($, _, Backbone, UserCollection, UserListView, AlertView, template) {
+  ], function($, _, Backbone, UserCollection, UserListView, App, template) {
 
   return Backbone.View.extend({
     template : _.template(template),
