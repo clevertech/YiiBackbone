@@ -1,7 +1,7 @@
 define([
   'jquery',
-  'underscore', 
-  'backbone',
+  'underscore',
+  'backbone'
   ], function($, _, Backbone) {
 
   var Router = Backbone.Router.extend({
@@ -14,7 +14,7 @@ define([
       "user/delete/:id"      : "userDelete",
       "post/list"            : "postList",
       "post/new"             : "postNew",
-      "preset/:pwResetToken" : "resetPassword",
+      "preset/:pwResetToken" : "resetPassword"
     },
 
     initialize: function(options) {
@@ -25,7 +25,7 @@ define([
     home: function() {
       this.vent.trigger('post:list');
     },
-  
+
     userList: function() {
       this.vent.trigger('user:list');
     },
@@ -44,7 +44,7 @@ define([
 
     postNew: function() {
       this.vent.trigger('post:new');
-    },
+    }
 
   });
 

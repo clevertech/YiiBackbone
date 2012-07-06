@@ -1,8 +1,9 @@
 /app/node_modules
 /app/css/.sass-cache
 
+/assets
 /protected/runtime
 /protected/config/main-local.php
 /protected/config/params-local.php
 
-
+/.idea

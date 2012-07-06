@@ -1,7 +1,7 @@
 YiiBackbone
 ===========
 
-- Status: Work in progress. 
+- Status: Work in progress.
 - Integration environment: http://yiibackbone.int.clevertech.biz/
 - Login: admin/pass1234
 
@@ -15,7 +15,7 @@ or serve as reference point on using Backbone.js.
 Requirements
 ============
 
-- Apache 2 Web Server 
+- Apache 2 Web Server
 - MySQL 5.1+ with InnoDB support.
 - PHP 5.3+ configured with the following extensions:
   - PDO
@@ -27,7 +27,7 @@ Requirements
 - Node.js (http://nodejs.org/)
 - NPM (http://npmjs.org/)
 
-Installation 
+Installation
 ============
 
 You can get the source files from:
@@ -47,26 +47,26 @@ After you clone the repo, create a params-local.php file inside
       'env'           => 'private',
     );
 
-Create a folder _protected/runtime_  and make it writable by the webserver.
+Make directories _protected/runtime_ and _protected/assets_ writable by the webserver.
 
 run the migrations:
 
     $ cd YiiBackbone/protected
     $ ./yiic migrate
 
-Technology Stack 
+Technology Stack
 ================
 
-Here are all current components of YiiBackbone and links to relevant resources. 
+Here are all current components of YiiBackbone and links to relevant resources.
 
 Name :                    Path :                                           Docs URL
 -------------------------------------------------------------------------------------------------------
-- Yii                  : 'protected/lib/yii-1.1.9                        : http://www.yiiframework.com/ 
-- require.js           : 'app/js/libs/require/require.js                 : http://requirejs.org/           
+- Yii                  : 'protected/lib/yii-1.1.9                        : http://www.yiiframework.com/
+- require.js           : 'app/js/libs/require/require.js                 : http://requirejs.org/
 - jquery               : 'app/js/libs/jquery/jquery-1.7.1.min',          : http://jquery.com/
 - jqueryUICore         : 'app/js/libs/jquery-ui/jquery.ui.core',         : http://jqueryui.com/
 - jqueryUIWidget       : 'app/js/libs/jquery-ui/jquery.ui.widget',       : http://jqueryui.com/
-- jqueryUIMouse        : 'app/js/libs/jquery-ui/jquery.ui.mouse',        : http://jqueryui.com/ 
+- jqueryUIMouse        : 'app/js/libs/jquery-ui/jquery.ui.mouse',        : http://jqueryui.com/
 - jqueryUIPosition     : 'app/js/libs/jquery-ui/jquery.ui.position',     : http://jqueryui.com/demos/position/
 - jqueryUIAutocomplete : 'app/js/libs/jquery-ui/jquery.ui.autocomplete', : http://jqueryui.com/demos/autocomplete/
 - jqueryUIDatepicker   : 'app/js/libs/jquery-ui/jquery.ui.datepicker',   : http://jqueryui.com/demos/datepicker/
@@ -97,13 +97,13 @@ https://github.com/jrburke/requirejs/wiki/Updating-existing-libraries
 Testing
 =======
 
-For BDD on YiiBackbone we are using: 
+For BDD on YiiBackbone we are using:
 
 - Cucumber.js : https://github.com/cucumber/cucumber-js
 - Jasmine     : http://pivotal.github.com/jasmine/
 
 You need to install /app/package.json using NPM to enable Cucumber.js. Follow
-the instructions on Cucumber.js's docs site above. 
+the instructions on Cucumber.js's docs site above.
 
 Code Style Guide
 ================
@@ -135,12 +135,12 @@ Architecture
 ============
 
 YiiBackbone's architecture is divided into two obvious parts. The server and
-the client. 
+the client.
 
 The server-side is handled by Yii. Yii is used to provide the DB manipulations
 with the migrations, emailing, ActiveRecord, RESTful resources, password
 encryption, secure cookie over SSL creation, console commands and few other
-things. All server side files can be found under "/protected".  
+things. All server side files can be found under "/protected".
 
 The actual app is build entirely with JS on the client-side. All files can be
 found under "/app".
