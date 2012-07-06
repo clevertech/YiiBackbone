@@ -14,14 +14,9 @@ define([
       "click #logout"   : "logout"
     },
 
-    initialize: function() {
-      this.model.on('destroy', this.close, this);
-    },
-
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
       $('#nav-menu').html(this.el);
-      return this;
     },
 
     logout: function(event) {

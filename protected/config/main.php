@@ -47,7 +47,7 @@ return CMap::mergeArray (array(
 
 				array('user/list'       , 'pattern'=>'api/user'             , 'verb'=>'GET'),
 				array('user/create'     , 'pattern'=>'api/user'             , 'verb'=>'POST'),
-				array('post/read'       , 'pattern'=>'api/user/<id:\d+>'    , 'verb'=>'GET'),
+				array('user/read'       , 'pattern'=>'api/user/<id:\d+>'    , 'verb'=>'GET'),
 				array('user/update'     , 'pattern'=>'api/user/<id:\d+>'    , 'verb'=>'PUT'),
 				array('user/delete'     , 'pattern'=>'api/user/<id:\d+>'    , 'verb'=>'DELETE'),
 
@@ -75,7 +75,25 @@ return CMap::mergeArray (array(
 			'charset'            => 'utf8',
 			'enableParamLogging' => YII_DEBUG,
 			'emulatePrepare'     => true,
+//			'enableProfiling'=> YII_DEBUG,
+			'schemaCachingDuration' => YII_DEBUG ? 0 : 86400000,  // 1000 days
         ),
+		'session' => array(
+			'class' => 'system.web.CDbHttpSession',
+			'connectionID' => 'db',
+			'autoCreateSessionTable' => false,
+			'sessionTableName' => 'yii_session'
+		),
+		'cache'=>extension_loaded('apc') ?
+			array(
+				'class' => 'CApcCache',
+			) :
+			array(
+				'class' => 'CDbCache',
+				'connectionID' => 'db',
+				'autoCreateCacheTable' => true,
+				'cacheTableName' => 'cache',
+			),
 		'mailer' => array(
 		  'class' => 'application.extensions.mailer.EMailer',
 		),
@@ -89,6 +107,13 @@ return CMap::mergeArray (array(
 				array(
 					'class'=>'CFileLogRoute',
 					'levels'=>'error, warning',
+				),
+				array(
+					'class'=>'CEmailLogRoute',
+					'levels'=>'error',
+					'filter'=>'CLogFilter',
+					'emails' => array('developer@example.com'),
+					'enabled' => !YII_DEBUG,
 				),
 			),
 		),

@@ -7,7 +7,7 @@
 }
 
 #loader.loading {
-	background: url(../img/ajax-loader.gif) no-repeat;  
+	background: url(../img/ajax-loader.gif) no-repeat;
 	display: none;
 }
 
@@ -71,7 +71,7 @@ div.navbar {
 
       }
 
-			div.login {
+			.login {
 				@include float-right;
 				height: 28px;
 				padding-top: 4px;
@@ -95,7 +95,7 @@ div.navbar {
 						}
 
 						a.btn {
-							
+
 						}
 
 					}
@@ -117,7 +117,7 @@ div.navbar {
 							padding: 0;
 
 							b.caret {
-								
+
 							}
 
 						}
@@ -142,7 +142,7 @@ div.main {
     list-style: none;
 
     li {
-      margin: 40px 0; 
+      margin: 40px 0;
 
       a.edit {
         color: #444;
@@ -153,7 +153,7 @@ div.main {
       }
 
       div.content {
-        
+
       }
     }
   }

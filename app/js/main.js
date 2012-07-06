@@ -131,28 +131,25 @@ define([
     $('body').removeClass('guest').addClass('logged-in');
 
     var model = data instanceof WebUser ? data : new WebUser(data);
-    var navbarView = new NavbarView({model: model});
-    navbarView.render();
+    var view = new NavbarView({model: model});
+    view.render();
 
     model.on('destroy',function() {
-      navbarView.close();
+      view.close();
       App.vent.trigger('webUser:guest');
+      App.vent.trigger('post:list');
     });
-
-    model.on('destroy', function() {App.vent.trigger('login')});
     this.vent.on('logout', model.destroy, model);
   }, App);
 
   App.vent.on('webUser:guest', function() {
     $('body').removeClass('logged-in').addClass('guest');
-
     var model = new WebUser;
     var view = new LoginView({model: model});
     view.render();
-
     model.on('login', function() {
+      view.close();
       App.vent.trigger('webUser:init', this);
-      App.vent.trigger('post:list');
     }, model);
   }, App);
 
