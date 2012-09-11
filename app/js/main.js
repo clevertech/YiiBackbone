@@ -16,7 +16,6 @@ requirejs.config({
     jqueryUIPosition     : 'libs/jquery-ui/jquery.ui.position',
     jqueryUIAutocomplete : 'libs/jquery-ui/jquery.ui.autocomplete',
     jqueryUIDatepicker   : 'libs/jquery-ui/jquery.ui.datepicker',
-    cookie               : 'libs/jquery/jquery.cookie',
     underscore           : 'libs/underscore/underscore',
     underscoreString     : 'libs/underscore/underscore.string',
     backbone             : 'libs/backbone/backbone',
@@ -61,37 +60,22 @@ define([
   'router',
   'app',
   'models/login',
-  'models/comment',
   'models/webUser',
   'collections/user',
   'collections/post',
   'collections/comment',
-  'views/home',
   'views/navbar',
   'views/search',
   'views/login',
-  'views/user/list',
-  'views/post/list',
-  'views/comment/list',
-  'views/post/form',
-  'views/comment/form',
-  'views/user/form',
-  'views/post/form',
-  'views/alert',
-  'views/post/item',
-  'cookie',
   'bootstrapDropdown',
   'bootstrapModal',
   'backboneRelational',
   'datejs'
 ], function($, _, Backbone, domReady,
             Router, App,
-            LoginModel, CommentModel, WebUser,
+            LoginModel, WebUser,
             UserCollection, PostCollection, CommentCollection,
-            HomeView, NavbarView, SearchView, LoginView,
-            UserListView, PostListView, CommentListView,
-            PostFormView, CommentFormView, UserForm, PostForm, AlertView,
-            PostItem) {
+            NavbarView, SearchView, LoginView) {
 
   $.ajaxSetup({
     dataFilter: function(data, dataType) {
@@ -156,9 +140,11 @@ define([
   // Alerts
 
   App.vent.on('alert', function (options) {
-    var alertView = new AlertView(options);
-    this.headRegion.show(alertView);
-  }, App);
+    require(['views/alert'], function(AlertView) {
+      var alertView = new AlertView(options);
+      App.headRegion.show(alertView);
+    });
+  });
 
   // Users
 
@@ -166,20 +152,14 @@ define([
     $.when(
       this.users.length || this.users.fetch()
     ).done(function() {
-        Backbone.history.navigate('user/list');
-        var view = new UserListView({
-          collection: App.users
+        require(['views/user/list'], function(UserList) {
+          Backbone.history.navigate('user/list');
+          var view = new UserList({
+            collection: App.users
+          });
+          App.mainRegion.show(view);
         });
-        App.mainRegion.show(view);
       });
-  }, App);
-
-  App.vent.on('user:new', function() {
-    Backbone.history.navigate('user/new');
-    var view = new UserForm({
-        model: new App.users.model
-    });
-    App.mainRegion.show(view);
   }, App);
 
   App.vent.on('user:new', function () {
@@ -201,9 +181,7 @@ define([
   }, App);
 
   App.vent.on('user:form', function (model) {
-    $.when(
-//      fetch some data needed for view
-    ).done(function () {
+      require(['views/user/form'], function(UserForm) {
         var view = new UserForm({model: model});
         App.mainRegion.show(view);
       });
@@ -215,11 +193,13 @@ define([
     $.when(
       this.posts.length || this.posts.fetch()
     ).done(function() {
-        Backbone.history.navigate('post/list');
-        var view = new PostListView({
-          collection : App.posts
-        });
-        App.mainRegion.show(view);
+        require(['views/post/list'], function(PostList) {
+          Backbone.history.navigate('post/list');
+          var view = new PostList({
+            collection : App.posts
+          });
+          App.mainRegion.show(view);
+        })
       });
   }, App);
 
@@ -242,12 +222,10 @@ define([
   }, App);
 
   App.vent.on('post:form', function (model) {
-    $.when(
-//      fetch some data needed for view
-    ).done(function () {
-        var view = new PostForm({model: model});
-        App.mainRegion.show(view);
-      });
+    require(['views/post/form'], function(PostForm) {
+      var view = new PostForm({model: model});
+      App.mainRegion.show(view);
+    });
   }, App);
 
   App.vent.on('post:read', function(model, options) {
@@ -258,9 +236,11 @@ define([
       }
       return model;
     }()).then(function () {
-      Backbone.history.navigate('post/read/' + model.get('id'));
-      var view = new PostItem({model: model});
-      App.mainRegion.show(view);
+      require(['views/post/item'], function(PostItem) {
+        Backbone.history.navigate('post/read/' + model.get('id'));
+        var view = new PostItem({model: model});
+        App.mainRegion.show(view);
+      })
     });
 
   }, App);

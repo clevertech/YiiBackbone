@@ -6,17 +6,12 @@ define([
   'datejs'
   ], function($, _, Backbone, PostModel){
 
-	var PostCollection = Backbone.Collection.extend({
-
+  return Backbone.Collection.extend({
     model: PostModel,
     url: 'api/post',
 
-    comparator: function(model) {
-      var date = Date.parse(model.get('create_date'));
-      return -date.getTime();
+    comparator: function(a, b) {
+      return Date.parse(a.get('create_date')) < Date.parse(b.get('create_date'));
     }
-
   });
-
-  return PostCollection;
 });
