@@ -6,8 +6,8 @@ class CommentController extends Controller
 	{
 		return array_merge(
 			array(array('allow',
-				'actions'=>array('read', 'list'),
-				'users'=>array('?')
+				'actions' => array('read', 'list'),
+				'users' => array('?')
 			)),
 			parent::accessRules()
 		);
@@ -44,8 +44,8 @@ class CommentController extends Controller
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
 			throw new CException(implode("\n", $errors));
 		}
-
-		$this->sendResponse(200);
+		$model->refresh();
+		$this->sendResponse(200, CJSON::encode($model));
 	}
 
 	public function actionUpdate($id)
@@ -64,8 +64,8 @@ class CommentController extends Controller
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
 			throw new CException(implode("\n", $errors));
 		}
-
-		$this->sendResponse(200);
+		$model->refresh();
+		$this->sendResponse(200, CJSON::encode($model));
 	}
 
 	public function actionDelete($id)

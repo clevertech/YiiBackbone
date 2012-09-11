@@ -21,7 +21,7 @@ define([
     },
 
     initialize: function(options) {
-      _.bindAll(this, 'render','confirmDelete');
+      _.bindAll(this, 'render','confirmDelete', 'close');
 
       this.model.on('error', this.error);
       this.model.on('modal:confirm', this.confirmDelete);
@@ -29,7 +29,6 @@ define([
 
     render: function(template) {
       this.$el.html(this.template(this.model.toJSON()));
-      return this;
     },
 
     edit: function(event){
@@ -49,7 +48,7 @@ define([
     },
 
     confirmDelete: function() {
-      $.when(this.model.destroy()).done(this.close());
+      $.when(this.model.destroy()).done(this.close);
     },
 
     error: function(model, response) {

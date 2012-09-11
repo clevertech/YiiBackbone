@@ -7,7 +7,7 @@ define([
   'app'
   ], function($, _, Backbone, ModelBinding, template, App) {
 
-  var UserFormView = Backbone.View.extend({
+  return Backbone.View.extend({
     template : _.template(template),
     events: {
       'click button[name=save]'   : 'save',
@@ -27,7 +27,7 @@ define([
 
     save: function(event) {
       event.preventDefault();
-      this.model.save();
+      App.users.create(this.model, {wait: true});
     },
 
     cancel: function(event) {
@@ -36,12 +36,11 @@ define([
     },
 
     success: function() {
-
       App.vent.trigger('alert', {
         msg: 'User "' + this.model.get('username') + '" updated.',
         type: 'success'
       });
-      App.vent.trigger('post:list');
+      App.vent.trigger('user:list');
     },
 
     error: function(model, response) {
@@ -58,8 +57,5 @@ define([
       this.undelegateEvents();
       this.remove();
     }
-
   });
-
-  return UserFormView;
 });

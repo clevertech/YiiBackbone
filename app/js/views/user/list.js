@@ -2,12 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'models/user',
   'views/user/item',
   'views/user/form',
   'text!templates/user/list.html',
   'app'
-  ], function($, _, Backbone, UserModel, UserItemView, UserFormView, template, App) {
+  ], function($, _, Backbone, UserItemView, UserFormView, template, App) {
 
   return Backbone.View.extend({
     template : _.template(template),
@@ -20,12 +19,12 @@ define([
     render: function() {
       this.$el.html(this.template());
       this.collection.each(this.renderItem);
-      return this;
     },
 
     renderItem: function(model){
-      var itemView = new UserItemView({model:model, vent:this.vent});
-      this.$('tbody').append(itemView.render().el);
+      var itemView = new UserItemView({model:model});
+      itemView.render();
+      this.$('tbody').append(itemView.el);
     },
 
     error: function(model, response) {

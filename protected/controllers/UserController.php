@@ -12,7 +12,7 @@ class UserController extends Controller
 	public function actionList()
 	{
 		$models = User::model()->findAll(array(
-			'select'=>'id, fname, lname, username, email, role',
+			'select' => 'id, fname, lname, username, email, role',
 		));
 		$this->sendResponse(200, CJSON::encode($models));
 	}
@@ -35,8 +35,8 @@ class UserController extends Controller
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
 			$this->sendResponse(500, implode("<br />", $errors));
 		}
-
-		$this->sendResponse(200);
+		$model->refresh();
+		$this->sendResponse(200, CJSON::encode($model));
 	}
 
 	public function actionUpdate($id)
@@ -59,8 +59,8 @@ class UserController extends Controller
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
 			$this->sendResponse(500, implode("<br />", $errors));
 		}
-
-		$this->sendResponse(200);
+		$model->refresh();
+		$this->sendResponse(200, CJSON::encode($model));
 	}
 
 	public function actionDelete($id)

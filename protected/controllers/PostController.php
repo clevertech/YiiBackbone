@@ -6,8 +6,8 @@ class PostController extends Controller
 	{
 		return array_merge(
 			array(array('allow',
-				'actions'=>array('read', 'list'),
-				'users'=>array('?')
+				'actions' => array('read', 'list'),
+				'users' => array('?')
 			)),
 			parent::accessRules()
 		);
@@ -45,8 +45,8 @@ class PostController extends Controller
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
 			$this->sendResponse(500, implode("<br />", $errors));
 		}
-
-		$this->sendResponse(200);
+		$model->refresh();
+		$this->sendResponse(200, CJSON::encode($model));
 	}
 
 	public function actionUpdate($id)
@@ -56,7 +56,7 @@ class PostController extends Controller
 
 		$data = CJSON::decode(file_get_contents('php://input'));
 
-		$model->title   = $data['title'];
+		$model->title = $data['title'];
 		$model->content = $data['content'];
 		$model->user_id = $data['user_id'];
 
@@ -65,8 +65,8 @@ class PostController extends Controller
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
 			$this->sendResponse(500, implode("<br />", $errors));
 		}
-
-		$this->sendResponse(200);
+		$model->refresh();
+		$this->sendResponse(200, CJSON::encode($model));
 	}
 
 	public function actionDelete($id)

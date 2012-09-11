@@ -176,7 +176,9 @@ define([
 
   App.vent.on('user:new', function() {
     Backbone.history.navigate('user/new');
-    var view = new UserForm({model: new UserModel, vent:this.vent});
+    var view = new UserForm({
+        model: new this.users.model
+    });
     App.mainRegion.show(view);
   }, App);
 
@@ -188,7 +190,7 @@ define([
   App.vent.on('user:edit', function (model, options) {
     $.when(function () {
       if (!model) {
-        model = new UserModel(options);
+        model = new this.users.model(options);
         return model.fetch();
       }
       return model;
