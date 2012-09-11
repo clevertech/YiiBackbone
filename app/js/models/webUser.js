@@ -5,7 +5,7 @@ define([
   ], function($, _, Backbone) {
 
   return Backbone.Model.extend({
-    url: '/api/webUser'
+    url: 'api/webUser'
   });
 
 });
