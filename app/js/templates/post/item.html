@@ -1,18 +1,22 @@
 <div class="row">
-  <div class="pull-right icons">
-    <a href="#post/edit/<%= model.id %>" class="edit login-required">
-			<i class="icon-edit"></i>
-		</a>
-    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal" class="delete login-required">
-			<i class="icon-trash"></i>
-		</a>
-  </div>
-  <h1>
-		<a class="read" href="#post/read/<%= model.id %>"><%= model.title %></a>
-	</h1>
+    <div class="pull-right icons">
+        <a href="#post/edit/<%= model.id %>" class="edit login-required">
+            <i class="icon-edit"></i>
+        </a>
+        <a href="javascript:void(0)" data-toggle="modal" data-target="#modal" class="delete login-required">
+            <i class="icon-trash"></i>
+        </a>
+    </div>
+    <h1>
+        <a class="read" href="#post/read/<%= model.id %>">
+            <%= model.title %>
+        </a>
+    </h1>
   <span class="post-meta">
-		<%= model.create_date_formatted %> / <%= comments.length %> comments / by <%= author ? author.username : '' %>
-	</span>
-  <hr>
-  <div class="content"><%= model.content %></div>
+        <%= model.create_date ? Date.parse(model.create_date).toString('d MMM, yyyy') : '' %> /
+        <%= comments.length %> comments /
+        by <%= author ? author.username : '' %>
+    </span>
+    <hr>
+    <div class="content"><%= model.content %></div>
 </div>

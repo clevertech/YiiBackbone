@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This is the model class for table "post".
  */
@@ -8,7 +8,7 @@ class Post extends CActiveRecord
     {
         return parent::model($className);
     }
- 
+
     public function tableName()
     {
         return 'post';
@@ -20,6 +20,12 @@ class Post extends CActiveRecord
 			array('title, content', 'required'),
 			array('title', 'length', 'min' => 3, 'max' => 100),
 			array('create_date', 'default', 'value' => new CDbExpression('NOW()'), 'setOnEmpty' => false, 'on' => 'insert')
+		);
+	}
+
+	function relations() {
+		return array(
+			'comments' => array(self::HAS_MANY, 'Comment', 'post_id'),
 		);
 	}
 }

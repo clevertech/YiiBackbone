@@ -24,14 +24,13 @@ define([
     },
 
     render: function(){
-      console.log(this.model);
       this.$el.html(this.template());
       ModelBinding.bind(this);
     },
 
     save: function(event) {
       event.preventDefault();
-      this.model.save();
+      App.posts.create(this.model, {wait: true});
     },
 
     cancel: function(event) {

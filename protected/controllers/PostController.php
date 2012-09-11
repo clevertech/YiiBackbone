@@ -75,7 +75,14 @@ class PostController extends Controller
 			throw new CHttpException(404);
 
 		if (!$model->delete())
-			throw new CException();
+			throw new CException('Cannot delete post');
 		$this->sendResponse(200);
+	}
+
+	public function actionComments($id)
+	{
+		if (null === ($model = Post::model()->findByPk($id)))
+			throw new CHttpException(404);
+		$this->sendResponse(200, CJSON::encode($model->comments));
 	}
 }

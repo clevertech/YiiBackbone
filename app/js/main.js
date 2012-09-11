@@ -32,8 +32,9 @@ requirejs.config({
     bootstrapDropdown    : 'libs/bootstrap/bootstrap-dropdown',
     bootstrapModal       : 'libs/bootstrap/bootstrap-modal',
     bootstrapTab         : 'libs/bootstrap/bootstrap-tab',
-    bootstrapTypeahead   : 'libs/bootstrap/bootstrap-typeahead'
+    bootstrapTypeahead   : 'libs/bootstrap/bootstrap-typeahead',
     // bootstrapWysihtml5   : 'libs/bootstrap/bootstrap-wysihtml5',
+    datejs: 'libs/utils/date'
   },
   shim: {
     underscore: {
@@ -83,7 +84,8 @@ define([
   'cookie',
   'bootstrapDropdown',
   'bootstrapModal',
-  'backboneRelational'
+  'backboneRelational',
+  'datejs'
 ], function($, _, Backbone, domReady,
             Router, App,
             LoginModel, PostModel, CommentModel, WebUser,
@@ -224,8 +226,8 @@ define([
   }, App);
 
   App.vent.on('post:new', function () {
-    Backbone.history.navigate('order/new');
-    App.vent.trigger('order:form', new PostModel);
+    Backbone.history.navigate('post/new');
+    App.vent.trigger('post:form', new this.posts.model);
   }, App);
 
   App.vent.on('post:edit', function (model, options) {
@@ -242,6 +244,7 @@ define([
   }, App);
 
   App.vent.on('post:form', function (model) {
+    console.log('post form');
     $.when(
 //      fetch some data needed for view
     ).done(function () {

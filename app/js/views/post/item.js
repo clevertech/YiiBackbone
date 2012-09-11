@@ -19,7 +19,7 @@ define([
     },
 
     initialize: function(options) {
-      _.bindAll(this, 'render','confirmDelete');
+      _.bindAll(this, 'render','confirmDelete', 'close');
 
       this.model.on('error', this.error);
       this.model.on('modal:confirm', this.confirmDelete);
@@ -29,7 +29,6 @@ define([
     },
 
     render: function(template) {
-      this.model.set('create_date_formatted', $.datepicker.formatDate('d M, yy', new Date(this.model.get('create_date'))));
       var self = this;
       $.when.apply(null, this.model.fetchRelated('comments')).done(function() {
         self.$el.html(self.template({
