@@ -4,8 +4,7 @@ define([
   'backbone',
   'models/comment',
   'collections/comment',
-  'backboneRelational',
-  'datejs'
+  'backboneRelational'
   ], function($, _, Backbone, CommentModel, CommentCollection) {
 
   return Backbone.RelationalModel.extend({
@@ -21,7 +20,7 @@ define([
         reverseRelation: {
           key: 'post',
           keySource: 'post_id',
-          includeInJSON: Backbone.Model.prototype.idAttribute,
+          includeInJSON: Backbone.Model.prototype.idAttribute
         }
       }
     ],

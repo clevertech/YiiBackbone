@@ -61,7 +61,6 @@ define([
   'router',
   'app',
   'models/login',
-  'models/post',
   'models/comment',
   'models/webUser',
   'collections/user',
@@ -79,7 +78,6 @@ define([
   'views/user/form',
   'views/post/form',
   'views/alert',
-  'models/user',
   'views/post/item',
   'cookie',
   'bootstrapDropdown',
@@ -88,12 +86,12 @@ define([
   'datejs'
 ], function($, _, Backbone, domReady,
             Router, App,
-            LoginModel, PostModel, CommentModel, WebUser,
+            LoginModel, CommentModel, WebUser,
             UserCollection, PostCollection, CommentCollection,
             HomeView, NavbarView, SearchView, LoginView,
             UserListView, PostListView, CommentListView,
             PostFormView, CommentFormView, UserForm, PostForm, AlertView,
-            UserModel, PostItem) {
+            PostItem) {
 
   $.ajaxSetup({
     dataFilter: function(data, dataType) {
@@ -179,20 +177,20 @@ define([
   App.vent.on('user:new', function() {
     Backbone.history.navigate('user/new');
     var view = new UserForm({
-        model: new this.users.model
+        model: new App.users.model
     });
     App.mainRegion.show(view);
   }, App);
 
   App.vent.on('user:new', function () {
     Backbone.history.navigate('user/new');
-    App.vent.trigger('user:form', new UserModel);
+    App.vent.trigger('user:form', new App.users.model);
   }, App);
 
   App.vent.on('user:edit', function (model, options) {
     $.when(function () {
       if (!model) {
-        model = new this.users.model(options);
+        model = new App.users.model(options);
         return model.fetch();
       }
       return model;
@@ -227,13 +225,13 @@ define([
 
   App.vent.on('post:new', function () {
     Backbone.history.navigate('post/new');
-    App.vent.trigger('post:form', new this.posts.model);
+    App.vent.trigger('post:form', new App.posts.model);
   }, App);
 
   App.vent.on('post:edit', function (model, options) {
     $.when(function () {
       if (!model) {
-        model = new PostModel(options);
+        model = new App.posts.model(options);
         return model.fetch();
       }
       return model;
@@ -244,7 +242,6 @@ define([
   }, App);
 
   App.vent.on('post:form', function (model) {
-    console.log('post form');
     $.when(
 //      fetch some data needed for view
     ).done(function () {
@@ -256,7 +253,7 @@ define([
   App.vent.on('post:read', function(model, options) {
     $.when(function () {
       if (!model) {
-        model = new PostModel(options);
+        model = new App.posts.model(options);
         return model.fetch();
       }
       return model;

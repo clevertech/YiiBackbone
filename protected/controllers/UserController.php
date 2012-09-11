@@ -4,16 +4,15 @@ class UserController extends Controller
 
 	public function actionRead($id)
 	{
-		if (null === ($model = User::model()->findByPk($id)))
+		$model = User::model()->noPassword()->findByPk($id);
+		if (null === $model)
 			throw new CHttpException(404);
 		$this->sendResponse(200, CJSON::encode($model));
 	}
 
 	public function actionList()
 	{
-		$models = User::model()->findAll(array(
-			'select' => 'id, fname, lname, username, email, role',
-		));
+		$models = User::model()->noPassword()->findAll();
 		$this->sendResponse(200, CJSON::encode($models));
 	}
 
@@ -35,7 +34,7 @@ class UserController extends Controller
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
 			$this->sendResponse(500, implode("<br />", $errors));
 		}
-		$model->refresh();
+		$model = User::model()->noPassword()->findByPk($model->id);
 		$this->sendResponse(200, CJSON::encode($model));
 	}
 
@@ -59,7 +58,7 @@ class UserController extends Controller
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
 			$this->sendResponse(500, implode("<br />", $errors));
 		}
-		$model->refresh();
+		$model = User::model()->noPassword()->findByPk($model->id);
 		$this->sendResponse(200, CJSON::encode($model));
 	}
 
