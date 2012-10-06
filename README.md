@@ -116,13 +116,13 @@ Backbone Resources
 We recommend going through the following resources for some advanced concepts on
 using Backbone.js.
 
-http://backbonetutorials.com/organizing-backbone-using-modules/
-http://lostechies.com/derickbailey/category/backbone/
+- http://backbonetutorials.com/organizing-backbone-using-modules/
+- http://lostechies.com/derickbailey/category/backbone/
 
 Also take a look at Marionette.Application and Marionette.Region components
 of great Backbone.Marionette framework:
 
-https://github.com/marionettejs/backbone.marionette
+- https://github.com/marionettejs/backbone.marionette
 
 Gotchas
 =======
@@ -161,8 +161,8 @@ The application consists of the following parts ("/app/js")
 
 Authors
 =======
-Ivan Shaovchev, @ivanshaovchev
-Rinat Silnov, @mashingan
+- Ivan Shaovchev, @ivanshaovchev
+- Rinat Silnov, @mashingan
 
 Thanks
 ======
