@@ -3,7 +3,7 @@ YiiBackbone
 
 - Status: Work in progress.
 - Integration environment: http://yiibackbone.int.clevertech.biz/
-- Login: admin/pass1234
+- Login: super/1q2w3e
 
 Introduction
 ============
@@ -34,60 +34,56 @@ You can get the source files from:
 
     $ git clone git@github.com:clevertech/YiiBackbone.git
 
-After you clone the repo, create a params-local.php file inside
-*/protected/config* with something like the following:
+And load git submodules:
 
-    return array(
-      'db.username'   => 'user',
-      'db.password'   => 'pass',
-      'db.name'       => 'db', //create the DB
-      'db.host'       => 'localhost',
-      'smtp.username' => 'email', //optional
-      'smtp.password' => 'pass',  //optional
-      'env'           => 'private',
-    );
+    $ cd YiiBackbone
+    $ git submodule update --init
 
 Make directories _protected/runtime_ and _protected/assets_ writable by the webserver.
 
+    $ chmod 0777 protected/runtime
+    $ chmod 0777 assets/
+
+Create a main-local.php file inside
+*/protected/config* with something like the following:
+
+    return array(
+        'components' => array(
+            'db' => array(
+                'connectionString' => "mysql:host=127.0.0.1;dbname=yii_backbone",
+                'username' => 'root',
+                'password' => '',
+            ),
+        )
+    );
+
+
 run the migrations:
 
-    $ cd YiiBackbone/protected
-    $ ./yiic migrate
+    $ cd protected
+    $ php yiic.php migrate
 
 Technology Stack
 ================
 
-Here are all current components of YiiBackbone and links to relevant resources.
+Here are some current components of YiiBackbone and links to relevant resources.
 
 Name :                    Path :                                           Docs URL
 -------------------------------------------------------------------------------------------------------
-- Yii                  : 'protected/lib/yii-1.1.9                        : http://www.yiiframework.com/
-- require.js           : 'app/js/libs/require/require.js                 : http://requirejs.org/
-- jquery               : 'app/js/libs/jquery/jquery-1.7.1.min',          : http://jquery.com/
-- jqueryUICore         : 'app/js/libs/jquery-ui/jquery.ui.core',         : http://jqueryui.com/
-- jqueryUIWidget       : 'app/js/libs/jquery-ui/jquery.ui.widget',       : http://jqueryui.com/
-- jqueryUIMouse        : 'app/js/libs/jquery-ui/jquery.ui.mouse',        : http://jqueryui.com/
-- jqueryUIPosition     : 'app/js/libs/jquery-ui/jquery.ui.position',     : http://jqueryui.com/demos/position/
-- jqueryUIAutocomplete : 'app/js/libs/jquery-ui/jquery.ui.autocomplete', : http://jqueryui.com/demos/autocomplete/
-- jqueryUIDatepicker   : 'app/js/libs/jquery-ui/jquery.ui.datepicker',   : http://jqueryui.com/demos/datepicker/
-- cookie               : 'app/js/libs/jquery/jquery.cookie',             : https://github.com/carhartl/jquery-cookie
-- underscore           : 'app/js/libs/underscore/underscore',            : http://documentcloud.github.com/underscore/
-- underscoreString     : 'app/js/libs/underscore/underscore.string',     : http://epeli.github.com/underscore.string/
-- backbone             : 'app/js/libs/backbone/backbone',                : http://documentcloud.github.com/backbone/
-- backboneRelational   : 'app/js/libs/backbone/backbone-relational',     : https://github.com/PaulUithol/Backbone-relational
+- Yii                  : 'protected/vendor/yii',                         : http://www.yiiframework.com/
+- Backbone.JS          : 'app/js/libs/backbone/backbone',                : http://documentcloud.github.com/backbone/
+- Underscore.JS        : 'app/js/libs/underscore/underscore',            : http://documentcloud.github.com/underscore/
+- RequireJS            : 'app/js/libs/require/*'                         : http://requirejs.org/
+- jQuery               : 'app/js/libs/jquery/jquery-1.7.1.min',          : http://jquery.com/
+- jQuery UI            : 'app/js/libs/jquery-ui/jquery.ui.core',         : http://jqueryui.com/
+- MarionetteJS         : 'app/js/libs/backbone/backbone.marionette',     : http://marionettejs.com/
+- Backbone-relational  : 'app/js/libs/backbone/backbone-relational',     : https://github.com/PaulUithol/Backbone-relational
 - modelbinding         : 'app/js/libs/backbone/backbone.modelbinding',   : https://github.com/derickbailey/backbone.modelbinding
 - visualsearch         : 'app/js/libs/app/visualsearch',                 : http://documentcloud.github.com/visualsearch/
-- text                 : 'app/js/libs/require/text',                     : http://requirejs.org/docs/api.html#text
-- domReady             : 'app/js/libs/require/domReady',                 : http://requirejs.org/docs/api.html#pageload
 - json                 : 'app/js/libs/utils/json2',                      : https://github.com/douglascrockford/JSON-js
-- bootstrapAlert       : 'app/js/libs/bootstrap/bootstrap-alert',        : http://twitter.github.com/bootstrap/javascript.html#alerts
-- bootstrapButton      : 'app/js/libs/bootstrap/bootstrap-button',       : http://twitter.github.com/bootstrap/javascript.html#buttons
-- bootstrapDropdown    : 'app/js/libs/bootstrap/bootstrap-dropdown',     : http://twitter.github.com/bootstrap/javascript.html#dropdowns
-- bootstrapModal       : 'app/js/libs/bootstrap/bootstrap-modal',        : http://twitter.github.com/bootstrap/javascript.html#modals
-- bootstrapTab         : 'app/js/libs/bootstrap/bootstrap-tab',          : http://twitter.github.com/bootstrap/javascript.html#tabs
-- bootstrapTypeahead   : 'app/js/libs/bootstrap/bootstrap-typeahead',    : http://twitter.github.com/bootstrap/javascript.html#typeahead
+- bootstrap            : 'app/js/libs/bootstrap/*',                      : http://twitter.github.com/bootstrap/javascript.html
 
-Please note that all JS libs are converted to AMD format so that they can be
+Please note that some JS libs are converted to AMD format so that they can be
 loaded asynchronously. If a lib is not defined as AMD module it will not load
 properly. For further information on AMD please see http://requirejs.org/docs/whyamd.html
 
@@ -117,15 +113,21 @@ For PHP files use only tabs and indent 1 tab at a time.
 Backbone Resources
 ==================
 
-I recommend going through the following resources for some advanced concepts on
+We recommend going through the following resources for some advanced concepts on
 using Backbone.js.
 
+http://backbonetutorials.com/organizing-backbone-using-modules/
 http://lostechies.com/derickbailey/category/backbone/
+
+Also take a look at Marionette.Application and Marionette.Region components
+of great Backbone.Marionette framework:
+
+https://github.com/marionettejs/backbone.marionette
 
 Gotchas
 =======
 
-One problem that you may encounter while working with Require.js is circular
+One problem that you may encounter while working with RequireJS is circular
 dependencies. Please see http://requirejs.org/docs/api.html#circular
 
 Known Bugs
@@ -160,6 +162,7 @@ The application consists of the following parts ("/app/js")
 Authors
 =======
 Ivan Shaovchev, @ivanshaovchev
+Rinat Silnov, @mashingan
 
 Thanks
 ======

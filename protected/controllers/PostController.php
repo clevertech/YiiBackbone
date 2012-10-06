@@ -6,7 +6,7 @@ class PostController extends Controller
 	{
 		return array_merge(
 			array(array('allow',
-				'actions' => array('read', 'list'),
+				'actions' => array('read', 'list', 'comments'),
 				'users' => array('?')
 			)),
 			parent::accessRules()

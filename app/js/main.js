@@ -85,18 +85,12 @@ define([
           type: 'error'
         });
         // Return something not json parsable to
-        // stop event triggering and ajax loading.
+        // stop event triggering and all current ajax requests.
         // Looking for better solution.
         return ';';
       }
       return data;
     }
-  });
-
-  // Initialize Router
-  App.addInitializer(function (options) {
-    this.router = new Router();
-    Backbone.history.start();
   });
 
   // Initialize search
@@ -246,6 +240,10 @@ define([
   }, App);
 
   // Load code defined on php side in main layout and start the Application.
-  require(['onLoad']);
-  App.start();
+  require(['onLoad'], function() {
+    App.start();
+    App.router = new Router();
+    Backbone.history.start();
+  });
+
 });
