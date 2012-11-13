@@ -39,7 +39,7 @@ And load git submodules:
     $ cd YiiBackbone
     $ git submodule update --init
 
-Make directories _protected/runtime_ and _protected/assets_ writable by the webserver.
+Make directories _protected/runtime_ and _assets_ writable by the webserver.
 
     $ chmod 0777 protected/runtime
     $ chmod 0777 assets/
