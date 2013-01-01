@@ -63,6 +63,29 @@ run the migrations:
     $ cd protected
     $ php yiic.php migrate
 
+
+Optional - (Only if you want to integrate the Gii code generation feature of Yii for php models, controlers, CRUD, etc.
+
+    1) Uncomment out the following lines in */protected/config/main.js
+
+      Within modules:
+        //'gii'=>array(
+        //    'class'=>'system.gii.GiiModule',
+        //    'password'=>'giiPassword',
+        //),
+
+      Within urlManager:
+        //'gii'=>'gii',
+        //'gii/<controller:\w+>'=>'gii/<controller>',
+        //'gii/<controller:\w+>/<action:\w+>'=>'gii/<controller>/<action>',
+
+    2) Use this url password to use Gii:
+
+      URL:      http://hostname/path-to-yiibackbone/gii (for example: http://localhost/YiiBackbone/gii)
+      Password: giiPassword
+
+
+
 Technology Stack
 ================
 

@@ -26,7 +26,12 @@ return CMap::mergeArray (array(
 		'application.helpers.*',
 	),
 
-	'modules'=>array(),
+  'modules'=>array(
+    //'gii'=>array(
+    //    'class'=>'system.gii.GiiModule',
+    //    'password'=>'giiPassword',
+    //),
+  ),
 
 	// application components
 	'components'=>array(
@@ -38,6 +43,12 @@ return CMap::mergeArray (array(
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'rules'=>array(
+
+        // GII patterns
+        //'gii'=>'gii',
+        //'gii/<controller:\w+>'=>'gii/<controller>',
+        //'gii/<controller:\w+>/<action:\w+>'=>'gii/<controller>/<action>',
+
 				// REST patterns
 				array('site/login'         , 'pattern'=>'api/webUser'              , 'verb'=>'POST')   ,
 				array('site/login'         , 'pattern'=>'api/webUser'              , 'verb'=>'PUT')   ,
