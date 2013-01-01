@@ -64,7 +64,7 @@ run the migrations:
     $ php yiic.php migrate
 
 
-Optional - (Only if you want to integrate the Gii code generation feature of Yii for php models, controlers, CRUD, etc.
+Optional - (Only if you want to integrate the Gii code generation feature of Yii for php models, controllers, CRUD, etc.)
 
     1) Uncomment out the following lines in */protected/config/main.js
 
