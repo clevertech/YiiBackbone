@@ -26,7 +26,7 @@ return CMap::mergeArray (array(
 		'application.helpers.*',
 	),
 
-	'modules'=>array(),
+  'modules'=>array(),
 
 	// application components
 	'components'=>array(
@@ -38,6 +38,7 @@ return CMap::mergeArray (array(
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'rules'=>array(
+
 				// REST patterns
 				array('site/login'         , 'pattern'=>'api/webUser'              , 'verb'=>'POST')   ,
 				array('site/login'         , 'pattern'=>'api/webUser'              , 'verb'=>'PUT')   ,
