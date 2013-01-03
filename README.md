@@ -45,44 +45,46 @@ Make directories _protected/runtime_ and _assets_ writable by the webserver.
     $ chmod 0777 assets/
 
 Create a main-local.php file inside
-*/protected/config* with something like the following:
+*/protected/config* with something like the following
+(uncomment the below lines if want to integrate the Gii code generation feature of Yii for generating php models, controllers, CRUD, etc. in your development environment):
 
     return array(
+    //    'modules' => array(
+    //        'gii'=>array(
+    //            'class'=>'system.gii.GiiModule',
+    //            'password'=>'giiPassword',
+    //        ),
+    //    ),
+
         'components' => array(
             'db' => array(
                 'connectionString' => "mysql:host=127.0.0.1;dbname=yii_backbone",
                 'username' => 'root',
                 'password' => '',
             ),
-        )
+
+    //        'urlManager'=>array(
+    //            'rules'=>array(
+    //                // GII patterns
+    //                'gii'=>'gii',
+    //                'gii/<controller:\w+>'=>'gii/<controller>',
+    //                'gii/<controller:\w+>/<action:\w+>'=>'gii/<controller>/<action>',
+    //            )
+    //        )
+        ),
     );
 
 
-run the migrations:
+Run the migrations:
 
     $ cd protected
     $ php yiic.php migrate
 
 
-Optional - (Only if you want to integrate the Gii code generation feature of Yii for php models, controllers, CRUD, etc.)
+Optional - if you chose to enable the Gii code generation tool, then you can use this url and password
 
-    1) Uncomment out the following lines in */protected/config/main.js
-
-      Within modules:
-        //'gii'=>array(
-        //    'class'=>'system.gii.GiiModule',
-        //    'password'=>'giiPassword',
-        //),
-
-      Within urlManager:
-        //'gii'=>'gii',
-        //'gii/<controller:\w+>'=>'gii/<controller>',
-        //'gii/<controller:\w+>/<action:\w+>'=>'gii/<controller>/<action>',
-
-    2) Use this url password to use Gii:
-
-      URL:      http://hostname/path-to-yiibackbone/gii (for example: http://localhost/YiiBackbone/gii)
-      Password: giiPassword
+    URL:      http://hostname/path-to-yiibackbone/gii (for example: http://localhost/YiiBackbone/gii)
+    Password: giiPassword
 
 
 
