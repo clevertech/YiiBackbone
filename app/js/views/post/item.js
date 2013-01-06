@@ -10,11 +10,10 @@ define([
   ], function($, _, Backbone, ModelBinding, App, ModalConfirmView, template) {
 
   return Backbone.View.extend({
-    tagName: 'li',
     template : _.template(template),
     events: {
       'click a.delete' : 'delete',
-  	  'click a.read'   : 'read',
+      'click a.read'   : 'read',
       'click a.edit'   : 'edit'
     },
 
@@ -40,7 +39,7 @@ define([
       return this;
     },
 
-	  read: function(event){
+    read: function(event){
       event.preventDefault();
       App.vent.trigger('post:read', this.model);
     },

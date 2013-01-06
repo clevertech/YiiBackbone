@@ -23,7 +23,8 @@ define([
 
     renderItem: function(model) {
       var itemView = new PostItemView({model:model});
-      this.$('ul').append(itemView.el);
+      $('<li>').html(itemView.el).appendTo(this.$('ul'));
+//      this.$('ul').append(itemView.el);
     },
 
     error: function(model, response) {

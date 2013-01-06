@@ -24,8 +24,6 @@ Requirements
   - Mcrypt
   - CUrl
   - Imap
-- Node.js (http://nodejs.org/)
-- NPM (http://npmjs.org/)
 
 Installation
 ============
@@ -46,34 +44,35 @@ Make directories _protected/runtime_ and _assets_ writable by the webserver.
 
 Create a main-local.php file inside
 */protected/config* with something like the following
-(uncomment the below lines if want to integrate the Gii code generation feature of Yii for generating php models, controllers, CRUD, etc. in your development environment):
+(uncomment the below lines if want to integrate the Gii code generation feature of Yii
+for generating php models, controllers, CRUD, etc. in your development environment):
 
-    return array(
-    //    'modules' => array(
-    //        'gii'=>array(
-    //            'class'=>'system.gii.GiiModule',
-    //            'password'=>'giiPassword',
-    //        ),
-    //    ),
-
-        'components' => array(
-            'db' => array(
-                'connectionString' => "mysql:host=127.0.0.1;dbname=yii_backbone",
-                'username' => 'root',
-                'password' => '',
-            ),
-
-    //        'urlManager'=>array(
-    //            'rules'=>array(
-    //                // GII patterns
-    //                'gii'=>'gii',
-    //                'gii/<controller:\w+>'=>'gii/<controller>',
-    //                'gii/<controller:\w+>/<action:\w+>'=>'gii/<controller>/<action>',
-    //            )
-    //        )
-        ),
-    );
-
+```
+<?php
+return array(
+//	'modules' => array(
+//		'gii' => array(
+//			'class' => 'system.gii.GiiModule',
+//			'password' => 'giiPassword',
+//		),
+//	),
+	'components' => array(
+		'db' => array(
+			'connectionString' => "mysql:host=127.0.0.1;dbname=yii_backbone",
+			'username' => 'root',
+			'password' => '',
+		),
+//		'urlManager' => array(
+//			'rules' => array(
+//				// GII patterns
+//				'gii' => 'gii',
+//				'gii/<controller:\w+>' => 'gii/<controller>',
+//				'gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
+//			)
+//		)
+	),
+);
+```
 
 Run the migrations:
 
@@ -132,8 +131,8 @@ Code Style Guide
 Indent
 ------
 
-For JavaScript, CSS, HTML files use only spaces, and indent 2 spaces at a time.
-For PHP files use only tabs and indent 1 tab at a time.
+For JavaScript, CSS, HTML files we use only spaces, and indent 2 spaces at a time.
+And for PHP files we follow Yii style with 1 tab indentation.
 
 Backbone Resources
 ==================
