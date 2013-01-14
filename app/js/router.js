@@ -40,13 +40,14 @@ define([
       });
     },
 
+    // Todo: do something if model wasn't found
     userEdit: function(id) {
       $.when(
         App.users.length || App.users.fetch()
       ).done(function () {
-        require(['views/user/form'], function(UserForm) {
+        require(['views/user/form'], function(Form) {
           var model = App.users.get(id);
-          App.mainRegion.show(new UserForm({
+          App.mainRegion.show(new Form({
             model: model
           }));
         });
@@ -55,20 +56,51 @@ define([
 
     // Posts:
     postList: function() {
-      App.vent.trigger('post:list');
+      $.when(
+        App.posts.length || App.posts.fetch()
+      ).done(function() {
+        require(['views/post/list'], function(PostList) {
+          App.mainRegion.show(new PostList({
+            collection : App.posts
+          }));
+        })
+      });
     },
 
     postNew: function() {
-      App.vent.trigger('post:new');
+      require(['views/post/form'], function(PostForm) {
+        App.mainRegion.show(new PostForm({
+          model: new App.posts.model
+        }));
+      });
     },
 
+    // Todo: do something if model wasn't found
     postEdit: function(id) {
-      App.vent.trigger('post:edit', null, {id: id});
+      $.when(
+        App.posts.length || App.posts.fetch()
+      ).done(function () {
+        require(['views/post/form'], function(Form) {
+          var model = App.posts.get(id);
+          App.mainRegion.show(new Form({
+            model: model
+          }));
+        });
+      });
     },
 
+    // Todo: do something if model wasn't found
     postRead: function(id) {
-      App.vent.trigger('post:read', null, {id: id});
+      $.when(
+        App.posts.length || App.posts.fetch()
+      ).done(function () {
+        require(['views/post/item'], function(Item) {
+          var model = App.posts.get(id);
+          App.mainRegion.show(new Item({
+            model: model
+          }));
+        });
+      });
     }
-
   });
 });

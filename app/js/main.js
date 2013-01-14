@@ -64,7 +64,7 @@ define([
     model.on('destroy',function() {
       view.close();
       App.vent.trigger('webUser:guest');
-      App.vent.trigger('post:list');
+      Backbone.history.navigate('post/list', true);
     });
     this.vent.on('logout', model.destroy, model);
   }, App);
@@ -85,69 +85,10 @@ define([
     });
   });
 
-  // Posts
-
-  App.vent.on('post:list', function () {
-    $.when(
-      this.posts.length || this.posts.fetch()
-    ).done(function() {
-        require(['views/post/list'], function(PostList) {
-          Backbone.history.navigate('post/list');
-          var view = new PostList({
-            collection : App.posts
-          });
-          App.mainRegion.show(view);
-        })
-      });
-  }, App);
-
-  App.vent.on('post:new', function () {
-    Backbone.history.navigate('post/new');
-    App.vent.trigger('post:form', new App.posts.model);
-  }, App);
-
-  App.vent.on('post:edit', function (model, options) {
-    $.when(function () {
-      if (!model) {
-        model = new App.posts.model(options);
-        return model.fetch();
-      }
-      return model;
-    }()).then(function () {
-      Backbone.history.navigate('post/edit/' + model.get('id'));
-      App.vent.trigger('post:form', model);
-    });
-  }, App);
-
-  App.vent.on('post:form', function (model) {
-    require(['views/post/form'], function(PostForm) {
-      var view = new PostForm({model: model});
-      App.mainRegion.show(view);
-    });
-  }, App);
-
-  App.vent.on('post:read', function(model, options) {
-    $.when(function () {
-      if (!model) {
-        model = new App.posts.model(options);
-        return model.fetch();
-      }
-      return model;
-    }()).then(function () {
-      require(['views/post/item'], function(PostItem) {
-        Backbone.history.navigate('post/read/' + model.get('id'));
-        var view = new PostItem({model: model});
-        App.mainRegion.show(view);
-      })
-    });
-
-  }, App);
-
   // Load code defined on php side in main layout and start the Application.
   require(['onLoad'], function() {
     App.start();
     App.router = new Router();
     Backbone.history.start();
   });
-
 });

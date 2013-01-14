@@ -39,14 +39,14 @@ define([
       return this;
     },
 
-    read: function(event){
-      event.preventDefault();
-      App.vent.trigger('post:read', this.model);
+    read: function(e){
+      e.preventDefault();
+      Backbone.history.navigate('post/read/' + this.model.id, true);
     },
 
-    edit: function(event){
-      event.preventDefault();
-      App.vent.trigger('post:edit', this.model);
+    edit: function(e){
+      e.preventDefault();
+      Backbone.history.navigate('post/edit/' + this.model.id, true);
     },
 
     delete: function(event) {
