@@ -1,8 +1,7 @@
 <?php
 class UserController extends Controller
 {
-
-	public function actionRead($id)
+	function actionRead($id)
 	{
 		$model = User::model()->findByPk($id);
 		if (null === $model)
@@ -10,13 +9,13 @@ class UserController extends Controller
 		$this->sendResponse(200, JSON::encode($model));
 	}
 
-	public function actionList()
+	function actionList()
 	{
 		$models = User::model()->findAll();
 		$this->sendResponse(200, JSON::encode($models));
 	}
 
-	public function actionCreate()
+	function actionCreate()
 	{
 		$model = new User();
 		$model->setAttributes($this->getJsonInput());
@@ -29,7 +28,7 @@ class UserController extends Controller
 		$this->sendResponse(200, JSON::encode($model));
 	}
 
-	public function actionUpdate($id)
+	function actionUpdate($id)
 	{
 		if (null === ($model = User::model()->findByPk($id)))
 			throw new CHttpException(404);
@@ -43,7 +42,7 @@ class UserController extends Controller
 		$this->sendResponse(200, JSON::encode($model));
 	}
 
-	public function actionDelete($id)
+	function actionDelete($id)
 	{
 		if (null === ($model = User::model()->findByPk($id)))
 			throw new CHttpException(404);

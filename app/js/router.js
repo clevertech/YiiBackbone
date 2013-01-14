@@ -8,7 +8,7 @@ define([
   return Backbone.Router.extend({
 
     routes: {
-      ""                     : "postList",
+      ".*"                   : "postList",
       "user/list"            : "userList",
       "user/new"             : "userNew",
       "user/edit/:id"        : "userEdit",
@@ -16,25 +16,41 @@ define([
       "post/list"            : "postList",
       "post/new"             : "postNew",
       "post/edit/:id"        : "postEdit",
-      "post/read/:id"        : "postRead",
-      "preset/:pwResetToken" : "resetPassword"
-    },
-
-    resetPassword: function(pwResetToken) {
-      App.vent.trigger('site:passreset', pwResetToken);
+      "post/read/:id"        : "postRead"
     },
 
     // Users
     userList: function() {
-      App.vent.trigger('user:list');
+      $.when(
+        App.users.length || App.users.fetch()
+      ).done(function() {
+        require(['views/user/list'], function(UserList) {
+          App.mainRegion.show(new UserList({
+            collection: App.users
+          }));
+        });
+      });
     },
 
     userNew: function() {
-      App.vent.trigger('user:new');
+      require(['views/user/form'], function(UserForm) {
+        App.mainRegion.show(new UserForm({
+          model: new App.users.model
+        }));
+      });
     },
 
     userEdit: function(id) {
-      App.vent.trigger('user:edit', null, {id: id});
+      $.when(
+        App.users.length || App.users.fetch()
+      ).done(function () {
+        require(['views/user/form'], function(UserForm) {
+          var model = App.users.get(id);
+          App.mainRegion.show(new UserForm({
+            model: model
+          }));
+        });
+      });
     },
 
     // Posts:

@@ -85,47 +85,6 @@ define([
     });
   });
 
-  // Users
-
-  App.vent.on('user:list', function () {
-    $.when(
-      this.users.length || this.users.fetch()
-    ).done(function() {
-        require(['views/user/list'], function(UserList) {
-          Backbone.history.navigate('user/list');
-          var view = new UserList({
-            collection: App.users
-          });
-          App.mainRegion.show(view);
-        });
-      });
-  }, App);
-
-  App.vent.on('user:new', function () {
-    Backbone.history.navigate('user/new');
-    App.vent.trigger('user:form', new App.users.model);
-  }, App);
-
-  App.vent.on('user:edit', function (model, options) {
-    $.when(function () {
-      if (!model) {
-        model = new App.users.model(options);
-        return model.fetch();
-      }
-      return model;
-    }()).then(function () {
-        Backbone.history.navigate('user/edit/' + model.get('id'));
-        App.vent.trigger('user:form', model);
-      });
-  }, App);
-
-  App.vent.on('user:form', function (model) {
-      require(['views/user/form'], function(UserForm) {
-        var view = new UserForm({model: model});
-        App.mainRegion.show(view);
-      });
-  }, App);
-
   // Posts
 
   App.vent.on('post:list', function () {

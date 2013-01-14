@@ -44,7 +44,6 @@ define([
     },
 
     close: function() {
-      this.off(null, null, this);
       this.remove();
     }
   });
