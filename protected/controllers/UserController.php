@@ -4,16 +4,16 @@ class UserController extends Controller
 
 	public function actionRead($id)
 	{
-		$model = User::model()->noPassword()->findByPk($id);
+		$model = User::model()->findByPk($id);
 		if (null === $model)
 			throw new CHttpException(404);
-		$this->sendResponse(200, CJSON::encode($model));
+		$this->sendResponse(200, JSON::encode($model));
 	}
 
 	public function actionList()
 	{
-		$models = User::model()->noPassword()->findAll();
-		$this->sendResponse(200, CJSON::encode($models));
+		$models = User::model()->findAll();
+		$this->sendResponse(200, JSON::encode($models));
 	}
 
 	public function actionCreate()
@@ -34,8 +34,8 @@ class UserController extends Controller
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
 			$this->sendResponse(500, implode("<br />", $errors));
 		}
-		$model = User::model()->noPassword()->findByPk($model->id);
-		$this->sendResponse(200, CJSON::encode($model));
+		$model->refresh();
+		$this->sendResponse(200, JSON::encode($model));
 	}
 
 	public function actionUpdate($id)
@@ -58,17 +58,18 @@ class UserController extends Controller
 			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
 			$this->sendResponse(500, implode("<br />", $errors));
 		}
-		$model = User::model()->noPassword()->findByPk($model->id);
-		$this->sendResponse(200, CJSON::encode($model));
+		$model->refresh();
+		$this->sendResponse(200, JSON::encode($model));
 	}
 
 	public function actionDelete($id)
 	{
 		if (null === ($model = User::model()->findByPk($id)))
 			throw new CHttpException(404);
-
+		if ($model->id === Yii::app()->user->id) {
+			throw new CException('You cannot delete yourself');
+		}
 		if (!$model->delete())
 			throw new CException();
-		$this->sendResponse(200);
 	}
 }

@@ -31,12 +31,12 @@ class User extends ActiveRecord
 		return $enc->hash($value);
 	}
 
-	function scopes()
+	function toJSON()
 	{
-		return array(
-			'noPassword' => array(
-				'select' => 'id, fname, lname, username, email, role, create_date',
-			)
-		);
+		$attributes = parent::toJSON();
+		unset($attributes['password']);
+		unset($attributes['pw_reset_token']);
+		unset($attributes['is_deleted']);
+		return $attributes;
 	}
 }
