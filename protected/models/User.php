@@ -14,14 +14,19 @@ class User extends ActiveRecord
 	public function rules()
 	{
 		return array(
+			array('username, password', 'required'),
+			array('fname, lname, username, password, pw_reset_token, email, role', 'length', 'max'=>255),
+			array('newPassword, create_date', 'safe'),
 		);
 	}
 
 	protected function afterValidate()
 	{
-		if ($this->isNewRecord || $this->newPassword)
+		if ($this->isNewRecord) {
 			$this->password = $this->encrypt($this->password);
-
+		} else if ($this->newPassword) {
+			$this->password = $this->encrypt($this->newPassword);
+		}
 		return parent::afterValidate();
 	}
 

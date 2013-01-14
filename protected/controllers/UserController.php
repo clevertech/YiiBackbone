@@ -18,21 +18,12 @@ class UserController extends Controller
 
 	public function actionCreate()
 	{
-
-		$data = CJSON::decode(file_get_contents('php://input'));
-
 		$model = new User();
-		$model->fname = $data['fname'];
-		$model->lname = $data['lname'];
-		$model->email = $data['email'];
-		$model->username = $data['username'];
-		$model->password = $data['password'];
-		$model->role = $data['role'];
-
-		if (!$model->save()) {
-			$errors = array();
-			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
-			$this->sendResponse(500, implode("<br />", $errors));
+		$model->setAttributes($this->getJsonInput());
+		if (!$model->validate()) {
+			$this->sendResponse(400, CHtml::errorSummary($model));
+		} else if (!$model->save(false)) {
+			throw new CException('Cannot create a record');
 		}
 		$model->refresh();
 		$this->sendResponse(200, JSON::encode($model));
@@ -42,21 +33,11 @@ class UserController extends Controller
 	{
 		if (null === ($model = User::model()->findByPk($id)))
 			throw new CHttpException(404);
-		$data = CJSON::decode(file_get_contents('php://input'));
-
-		$model->fname = $data['fname'];
-		$model->lname = $data['lname'];
-		$model->email = $data['email'];
-		$model->username = $data['username'];
-		$model->role = $data['role'];
-		$model->newPassword = $data['password'];
-		if ($model->newPassword)
-			$model->password = $model->newPassword;
-
-		if (!$model->save()) {
-			$errors = array();
-			foreach ($model->getErrors() as $e) $errors = array_merge($errors, $e);
-			$this->sendResponse(500, implode("<br />", $errors));
+		$model->setAttributes($this->getJsonInput());
+		if (!$model->validate()) {
+			$this->sendResponse(400, CHtml::errorSummary($model));
+		} else if (!$model->save(false)) {
+			throw new CException('Cannot create a record');
 		}
 		$model->refresh();
 		$this->sendResponse(200, JSON::encode($model));
