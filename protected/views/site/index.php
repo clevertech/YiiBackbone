@@ -6,7 +6,7 @@
         App.vent.trigger('webUser:guest');
     <?php else: ?>
         App.addInitializer(function() {
-            App.vent.trigger('webUser:init', <?php echo Yii::app()->user->toJSON(); ?>);
+            App.vent.trigger('webUser:init', <?php echo JSON::encode(Yii::app()->user); ?>);
         });
     <?php endif; ?>
     });

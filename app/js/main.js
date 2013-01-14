@@ -71,13 +71,9 @@ define([
 
   App.vent.on('webUser:guest', function() {
     $('body').removeClass('logged-in').addClass('guest');
-    var model = new WebUser;
-    var view = new LoginView({model: model});
+    var view = new LoginView();
     view.render();
-    model.on('login', function() {
-      view.close();
-      App.vent.trigger('webUser:init', this);
-    }, model);
+    $('.login').html(view.el);
   }, App);
 
   // Alerts
