@@ -26,6 +26,10 @@ var require = {
         bootstrapModal       : 'libs/bootstrap/bootstrap-modal',
         bootstrapTab         : 'libs/bootstrap/bootstrap-tab',
         bootstrapTypeahead   : 'libs/bootstrap/bootstrap-typeahead',
+
+        jasmine              : 'libs/jasmine/jasmine',
+        'jasmine.html'       : 'libs/jasmine/jasmine-html',
+        'jasmine.jquery'     : 'libs/jasmine/jasmine-jquery',
         // bootstrapWysihtml5   : 'libs/bootstrap/bootstrap-wysihtml5',
         datejs: 'libs/utils/date'
     },
@@ -42,6 +46,9 @@ var require = {
         },
         marionette: {
             deps: ['backbone']
-        }
+        },
+        jasmine: {exports: 'jasmine'},
+        'jasmine.html':['jasmine'],
+        'jasmine.jquery': ['jasmine']
     }
 }

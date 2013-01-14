@@ -148,4 +148,9 @@ Admin
 
 		$this->sendResponse(200);
 	}
+
+	public function actionTests()
+	{
+		$this->render('tests');
+	}
 }
