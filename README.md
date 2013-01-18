@@ -149,6 +149,50 @@ of great Backbone.Marionette framework:
 
 - https://github.com/marionettejs/backbone.marionette
 
+Routing Introduction
+====================
+  Type the following url into the browser: http://hostname/path-to-yiibackbone/
+
+    1) This will match the the "" route defined in the Backbone router (app/js/router.js)
+          routes: {
+            "" : "postList"
+          }
+
+    2) This triggers the postList function in the same router file, that publishes an event
+          postList: function() {
+            App.vent.trigger('post:list');
+          }
+
+    3) A listener located in the (app/js/main.js) is listening for that event. This listener does a few things here, noted with comments
+          App.vent.on('post:list', function () {
+            $.when(
+              //if this data hadn't been previously retrieved, this triggers the fetch() method on the posts collection.  Go to step 4
+              this.posts.length || this.posts.fetch()
+
+            ).done(function() {
+                //after the post data is present, include the Backbone View
+                require(['views/post/list'], function(PostList) {
+
+                  //modify current url, and put an entry in history
+                  Backbone.history.navigate('post/list');
+                  var view = new PostList({
+                    collection : App.posts  //assign the post data to the collection property of the view
+                  });
+                  App.mainRegion.show(view);  //display the view
+                })
+              });
+          }, App);
+
+    4) The fetch method of the post collection (/app/js/collections/post.js), uses the url property located within
+          url: 'api/post'
+
+    5) That pattern and method (GET) in from step 4 is defined pattern (/protected/config/main.php) in the 2nd argument, where as the first argument is used to derive the controller & method
+          array('post/list'       , 'pattern'=>'api/post'             , 'verb'=>'GET')
+
+    6) The 'post/list' argument resolves to the PostController (/protected/controllers/PostController.php), specifically the actionList method.  This uses the Yii framework to retreive data & return as JSON object.  Once this is done, you'd return to the '.done() callback of step 3 to display the posts'
+
+
+
 Gotchas
 =======
 
