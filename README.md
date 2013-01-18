@@ -162,10 +162,14 @@ Routing Introduction
             App.vent.trigger('post:list');
           }
 
-    3) A listener located in the (app/js/main.js) is listening for that event. This listener does a few things here, noted with comments
+    3) A listener located in the (app/js/main.js) is listening for that event. This listener does a few things
+       here, noted with comments
+
           App.vent.on('post:list', function () {
             $.when(
-              //if this data hadn't been previously retrieved, this triggers the fetch() method on the posts collection.  Go to step 4
+              //if this data hadn't been previously retrieved, this triggers the fetch() method on the posts
+              //collection.  Go to step 4
+
               this.posts.length || this.posts.fetch()
 
             ).done(function() {
@@ -185,10 +189,14 @@ Routing Introduction
     4) The fetch method of the post collection (/app/js/collections/post.js), uses the url property located within
           url: 'api/post'
 
-    5) That pattern and method (GET) in from step 4 is defined pattern (/protected/config/main.php) in the 2nd argument, where as the first argument is used to derive the controller & method
+    5) That pattern and method (GET) in from step 4 is defined pattern (/protected/config/main.php) in the 2nd argument,
+       where as the first argument is used to derive the controller & method
+
           array('post/list'       , 'pattern'=>'api/post'             , 'verb'=>'GET')
 
-    6) The 'post/list' argument resolves to the PostController (/protected/controllers/PostController.php), specifically the actionList method.  This uses the Yii framework to retreive data & return as JSON object.  Once this is done, you'd return to the '.done() callback of step 3 to display the posts'
+    6) The 'post/list' argument resolves to the PostController (/protected/controllers/PostController.php), specifically
+       the actionList method.  This uses the Yii framework to retreive data & return as JSON object.  Once this is done,
+       you'd return to the '.done() callback of step 3 to display the posts'
 
 
 
