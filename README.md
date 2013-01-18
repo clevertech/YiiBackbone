@@ -186,17 +186,23 @@ Routing Introduction
               });
           }, App);
 
-    4) The fetch method of the post collection (/app/js/collections/post.js), uses the url property located within
+    4) The fetch method of the post collection (/app/js/collections/post.js), uses the url property located within.
+       This will make a GET request to this url
+
           url: 'api/post'
 
-    5) That pattern and method (GET) in from step 4 is defined pattern (/protected/config/main.php) in the 2nd argument,
-       where as the first argument is used to derive the controller & method
+    5) That request made from step 4 matches a defined url rule in (/protected/config/main.php). As indicated below:
 
-          array('post/list'       , 'pattern'=>'api/post'             , 'verb'=>'GET')
+          The 1st arg represents the controller & method to be invoked
+          The 2nd arg is the url pattern to listen for
+          The 3rd arg is the type of request made for the url patter to listen for
+
+        //array('controller/method',    'pattern'=>'url/requested',     'verb'=>'REQUEST_METHOD')
+          array('post/list'       ,     'pattern'=>'api/post',          'verb'=>'GET')
 
     6) The 'post/list' argument resolves to the PostController (/protected/controllers/PostController.php), specifically
        the actionList method.  This uses the Yii framework to retreive data & return as JSON object.  Once this is done,
-       you'd return to the '.done() callback of step 3 to display the posts'
+       you'd return to the '.done()' callback of step 3 to display the posts
 
 
 
