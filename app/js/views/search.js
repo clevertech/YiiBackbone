@@ -36,7 +36,7 @@ define([
             var post = App.posts.find(function(model) {
               return model.get('title') == item.get('value');
             });
-            App.vent.trigger('post:read', post);
+            Backbone.history.navigate('post/read/' + post.id, true);
             break;
         }
       });

@@ -109,4 +109,12 @@ class Controller extends CController
 	    return (isset($codes[$status])) ? $codes[$status] : '';
 	}
 
+	/**
+	 * Gets RestFul data and decodes its JSON request
+	 * @return mixed
+	 */
+	function getJsonInput()
+	{
+		return CJSON::decode(file_get_contents('php://input'));
+	}
 }

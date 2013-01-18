@@ -33,9 +33,9 @@ define([
       App.posts.create(this.model, {wait: true});
     },
 
-    cancel: function(event) {
-      event.preventDefault();
-      App.vent.trigger('post:list');
+    cancel: function(e) {
+      e.preventDefault();
+      Backbone.history.navigate('post/list', true);
     },
 
     success: function(model, response) {
@@ -43,7 +43,7 @@ define([
         msg: 'Post "' + this.model.get('title') + '" updated.',
         type: 'success'
       });
-      App.vent.trigger('post:list');
+      Backbone.history.navigate('post/list', true);
     },
 
     error: function(model, response) {

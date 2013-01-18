@@ -8,7 +8,7 @@ define([
   return Backbone.Router.extend({
 
     routes: {
-      ""                     : "postList",
+      ".*"                   : "postList",
       "user/list"            : "userList",
       "user/new"             : "userNew",
       "user/edit/:id"        : "userEdit",
@@ -16,43 +16,91 @@ define([
       "post/list"            : "postList",
       "post/new"             : "postNew",
       "post/edit/:id"        : "postEdit",
-      "post/read/:id"        : "postRead",
-      "preset/:pwResetToken" : "resetPassword"
-    },
-
-    resetPassword: function(pwResetToken) {
-      App.vent.trigger('site:passreset', pwResetToken);
+      "post/read/:id"        : "postRead"
     },
 
     // Users
     userList: function() {
-      App.vent.trigger('user:list');
+      $.when(
+        App.users.length || App.users.fetch()
+      ).done(function() {
+        require(['views/user/list'], function(UserList) {
+          App.mainRegion.show(new UserList({
+            collection: App.users
+          }));
+        });
+      });
     },
 
     userNew: function() {
-      App.vent.trigger('user:new');
+      require(['views/user/form'], function(UserForm) {
+        App.mainRegion.show(new UserForm({
+          model: new App.users.model
+        }));
+      });
     },
 
+    // Todo: do something if model wasn't found
     userEdit: function(id) {
-      App.vent.trigger('user:edit', null, {id: id});
+      $.when(
+        App.users.length || App.users.fetch()
+      ).done(function () {
+        require(['views/user/form'], function(Form) {
+          var model = App.users.get(id);
+          App.mainRegion.show(new Form({
+            model: model
+          }));
+        });
+      });
     },
 
     // Posts:
     postList: function() {
-      App.vent.trigger('post:list');
+      $.when(
+        App.posts.length || App.posts.fetch()
+      ).done(function() {
+        require(['views/post/list'], function(PostList) {
+          App.mainRegion.show(new PostList({
+            collection : App.posts
+          }));
+        })
+      });
     },
 
     postNew: function() {
-      App.vent.trigger('post:new');
+      require(['views/post/form'], function(PostForm) {
+        App.mainRegion.show(new PostForm({
+          model: new App.posts.model
+        }));
+      });
     },
 
+    // Todo: do something if model wasn't found
     postEdit: function(id) {
-      App.vent.trigger('post:edit', null, {id: id});
+      $.when(
+        App.posts.length || App.posts.fetch()
+      ).done(function () {
+        require(['views/post/form'], function(Form) {
+          var model = App.posts.get(id);
+          App.mainRegion.show(new Form({
+            model: model
+          }));
+        });
+      });
     },
 
+    // Todo: do something if model wasn't found
     postRead: function(id) {
-      App.vent.trigger('post:read', null, {id: id});
+      $.when(
+        App.posts.length || App.posts.fetch()
+      ).done(function () {
+        require(['views/post/item'], function(Item) {
+          var model = App.posts.get(id);
+          App.mainRegion.show(new Item({
+            model: model
+          }));
+        });
+      });
     }
-
   });
 });

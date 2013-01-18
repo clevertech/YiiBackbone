@@ -5,32 +5,32 @@
     <legend>Fill in user's information</legend>
     <div class="control-group">
       <label class="control-label" for="fname">First name</label>
-      <div class="controls"i>
+      <div class="controls">
         <input type="text" class="input-large" id="fname">
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="lname">Last name</label>
-      <div class="controls"i>
+      <div class="controls">
         <input type="text" class="input-large" id="lname">
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="email">Email</label>
-      <div class="controls"i>
+      <div class="controls">
         <input type="text" class="input-large" id="email">
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="username">Username</label>
-      <div class="controls"i>
+      <div class="controls">
         <input type="text" class="input-large" id="username">
       </div>
     </div>
     <div class="control-group">
-      <label class="control-label" for="password">Password</label>
-      <div class="controls"i>
-        <input type="password" class="input-large" id="password">
+      <label class="control-label">Password</label>
+      <div class="controls">
+        <input type="password" class="input-large" id="<%= model.isNew() ? 'password' : 'newPassword' %>">
       </div>
     </div>
     <div class="control-group">

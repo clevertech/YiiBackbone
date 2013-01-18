@@ -31,9 +31,9 @@ define([
       this.$el.html(this.template(this.model.toJSON()));
     },
 
-    edit: function(event){
-      event.preventDefault();
-      App.vent.trigger('user:edit', this.model);
+    edit: function(e){
+      e.preventDefault();
+      Backbone.history.navigate('user/edit/' + this.model.id, true);
     },
 
     delete: function(event) {

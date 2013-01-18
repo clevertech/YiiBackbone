@@ -21,7 +21,7 @@ define([
     },
 
     render: function() {
-      this.$el.html(this.template());
+      this.$el.html(this.template({model: this.model}));
       ModelBinding.bind(this);
     },
 
@@ -30,9 +30,9 @@ define([
       App.users.create(this.model, {wait: true});
     },
 
-    cancel: function(event) {
-      event.preventDefault();
-      App.vent.trigger('user:list');
+    cancel: function(e) {
+      e.preventDefault();
+      Backbone.history.navigate('user/list', true);
     },
 
     success: function() {
@@ -40,7 +40,7 @@ define([
         msg: 'User "' + this.model.get('username') + '" updated.',
         type: 'success'
       });
-      App.vent.trigger('user:list');
+      Backbone.history.navigate('user/list', true);
     },
 
     error: function(model, response) {

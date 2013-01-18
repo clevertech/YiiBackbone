@@ -40,23 +40,14 @@ class SiteController extends Controller
 
 	public function actionLogin()
 	{
-		$data = CJSON::decode(file_get_contents('php://input'));
-		if ($data) {
-			$model=new LoginForm;
-			$model->attributes = $data;
-			if(isset($data['ajax']) && $data['ajax']==='login-form')
-			{
-				if (!$model->validate())
-					echo CJSON::encode($model->errors);
-
-				Yii::app()->end();
-			}
-
-			if($model->validate() && $model->login()) {
-				$this->sendResponse(200, Yii::app()->user->toJSON());
-			} else {
-				$this->sendResponse(401, CJSON::encode($model->errors));
-			}
+		$model = new LoginForm;
+		$model->attributes = $_POST;
+		if ($model->validate()) {
+			if (!$model->login())
+				throw new CException('Cannot login user');
+			$this->sendResponse(200, JSON::encode(Yii::app()->user));
+		} else {
+			$this->sendResponse(400, CHtml::errorSummary($model, false));
 		}
 	}
 
@@ -147,5 +138,10 @@ Admin
 		}
 
 		$this->sendResponse(200);
+	}
+
+	public function actionTests()
+	{
+		$this->render('tests');
 	}
 }

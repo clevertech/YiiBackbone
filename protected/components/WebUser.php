@@ -6,9 +6,9 @@ class WebUser extends CWebUser
     public $loginRequiredAjaxResponse = 'Login Required!';
 
     public function toJSON() {
-        return CJSON::encode(array(
+        return array(
             'username' => $this->name,
             'id' => $this->id,
-        ));
+        );
     }
 }

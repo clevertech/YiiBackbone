@@ -2,47 +2,46 @@
 /**
  * This is the model class for table "user".
  */
-class User extends CActiveRecord
+class User extends ActiveRecord
 {
 	public $newPassword;
 
-    public static function model($className=__CLASS__)
-    {
-        return parent::model($className);
-    }
-
-    public function tableName()
-    {
-        return 'user';
-    }
+	public function tableName()
+	{
+		return 'user';
+	}
 
 	public function rules()
 	{
 		return array(
-			array('create_date', 'default', 'value' => new CDbExpression('NOW()'), 'setOnEmpty' => false, 'on' => 'insert')
+			array('username, password', 'required'),
+			array('fname, lname, username, password, pw_reset_token, email, role', 'length', 'max'=>255),
+			array('newPassword, create_date', 'safe'),
 		);
 	}
 
 	protected function afterValidate()
-    {
-		if ($this->isNewRecord || $this->newPassword)
+	{
+		if ($this->isNewRecord) {
 			$this->password = $this->encrypt($this->password);
-
+		} else if ($this->newPassword) {
+			$this->password = $this->encrypt($this->newPassword);
+		}
 		return parent::afterValidate();
-    }
+	}
 
 	public function encrypt($value)
-    {
+	{
 		$enc = new bCrypt();
 		return $enc->hash($value);
 	}
 
-	function scopes()
+	function toJSON()
 	{
-		return array(
-			'noPassword' => array(
-				'select' => 'id, fname, lname, username, email, role, create_date',
-			)
-		);
+		$attributes = parent::toJSON();
+		unset($attributes['password']);
+		unset($attributes['pw_reset_token']);
+		unset($attributes['is_deleted']);
+		return $attributes;
 	}
 }
