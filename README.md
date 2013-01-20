@@ -148,50 +148,38 @@ of great Backbone.Marionette framework:
 
 - https://github.com/marionettejs/backbone.marionette
 
-Routing Introduction
+Routing Example
 ====================
-  Type the following url into the browser: http://hostname/path-to-yiibackbone/
+  The following documents the routing happening when you type this url into the browser: http://hostname/path-to-yiibackbone/
 
-    1) This will match the the "" route defined in the Backbone router (app/js/router.js)
+    1) This will match to the default route defined in the Backbone router (app/js/router.js)
           routes: {
-            "" : "postList"
+            ".*" : "postList"
           }
 
-    2) This triggers the postList function in the same router file, that publishes an event
+    2) That triggers the postList function in the same router file
           postList: function() {
-            App.vent.trigger('post:list');
-          }
-
-    3) A listener located in the (app/js/main.js) is listening for that event. This listener does a few things
-       here, noted with comments
-
-          App.vent.on('post:list', function () {
             $.when(
               //if this data hadn't been previously retrieved, this triggers the fetch() method on the posts
-              //collection.  Go to step 4
-
-              this.posts.length || this.posts.fetch()
+              //collection.  Go to step 3
+              App.posts.length || App.posts.fetch()
 
             ).done(function() {
-                //after the post data is present, include the Backbone View
-                require(['views/post/list'], function(PostList) {
+              //after the post data is present, include the Backbone View, then display the output
+              require(['views/post/list'], function(PostList) {
+                App.mainRegion.show(new PostList({
+                  collection : App.posts
+                }));
+              })
+            });
+          }
 
-                  //modify current url, and put an entry in history
-                  Backbone.history.navigate('post/list');
-                  var view = new PostList({
-                    collection : App.posts  //assign the post data to the collection property of the view
-                  });
-                  App.mainRegion.show(view);  //display the view
-                })
-              });
-          }, App);
-
-    4) The fetch method of the post collection (/app/js/collections/post.js), uses the url property located within.
+    3) The fetch method of the post collection (/app/js/collections/post.js), uses the url property located within.
        This will make a GET request to this url
 
           url: 'api/post'
 
-    5) That request made from step 4 matches a defined url rule in (/protected/config/main.php). As indicated below:
+    4) That request described in step 3 matches a defined url rule in (/protected/config/main.php). As indicated below:
 
           The 1st arg represents the controller & method to be invoked
           The 2nd arg is the url pattern to listen for
@@ -200,9 +188,9 @@ Routing Introduction
         //array('controller/method',    'pattern'=>'url/requested',     'verb'=>'REQUEST_METHOD')
           array('post/list'       ,     'pattern'=>'api/post',          'verb'=>'GET')
 
-    6) The 'post/list' argument resolves to the PostController (/protected/controllers/PostController.php), specifically
+    5) The 'post/list' argument resolves to the PostController (/protected/controllers/PostController.php), specifically
        the actionList method.  This uses the Yii framework to retreive data & return as JSON object.  Once this is done,
-       you'd return to the '.done()' callback of step 3 to display the posts
+       you'd return to the '.done()' callback of step 2 to display the posts
 
 
 
