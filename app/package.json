@@ -13,7 +13,7 @@
   "devDependencies" : {
     "cucumber": "latest",
 	"html5" : "latest",
-	"zombie" : "latest"
+	"zombie" : "latest",
 	"should" : "latest"
   }
 }
