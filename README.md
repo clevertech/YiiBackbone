@@ -185,8 +185,8 @@ The application consists of the following parts ("/app/js")
 
 Authors
 =======
-- Ivan Shaovchev, @ivanshaovchev
-- Rinat Silnov, @mashingan
+- [Ivan Shaovchev](https://github.com/ivanshaovchev)
+- [Rinat Silnov](https://github.com/rinatio)
 
 Thanks
 ======

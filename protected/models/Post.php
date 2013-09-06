@@ -17,7 +17,7 @@ class Post extends ActiveRecord
 		);
 	}
 
-	function relations()
+	public function relations()
 	{
 		return array(
 			'comments' => array(self::HAS_MANY, 'Comment', 'post_id'),

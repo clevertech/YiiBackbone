@@ -25,13 +25,13 @@ class ActiveRecord extends CActiveRecord
 	 * but it'll be difficult to maintain. Waiting for Yii2.
 	 * @return CMapIterator
 	 */
-	function getIterator()
+	public function getIterator()
 	{
 		$attributes = $this->toJSON();
 		return new CMapIterator($attributes);
 	}
 
-	function toJSON()
+	public function toJSON()
 	{
 		$attributes = $this->getAttributes();
 		return $attributes;

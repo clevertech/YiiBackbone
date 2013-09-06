@@ -7,7 +7,7 @@ class SiteController extends Controller
 	public function accessRules()
 	{
 		return array_merge(
-			array(array('allow', 'users'=>array('?'))),
+			array(array('allow', 'users' => array('?'))),
 			// Include parent access rules
 			parent::accessRules()
 		);
@@ -29,13 +29,12 @@ class SiteController extends Controller
 	 */
 	public function actionError()
 	{
-	    if($error=Yii::app()->errorHandler->error)
-	    {
-	    	if(Yii::app()->request->isAjaxRequest)
-	    		echo $error['message'];
-	    	else
-	        	$this->render('error', $error);
-	    }
+		if ($error = Yii::app()->errorHandler->error) {
+			if (Yii::app()->request->isAjaxRequest)
+				echo $error['message'];
+			else
+				$this->render('error', $error);
+		}
 	}
 
 	public function actionLogin()
@@ -61,25 +60,22 @@ class SiteController extends Controller
 	{
 		$data = CJSON::decode(file_get_contents('php://input'));
 
-		$user = User::model()->findByAttributes(array('username'=>$data['username']));
+		$user = User::model()->findByAttributes(array('username' => $data['username']));
 
 		if (!$user)
 			$this->sendResponse(404, CJSON::encode('User not found.'));
 
 		Yii::app()->mailer->IsSMTP();
 
-		if ('private' == Yii::app()->params['env'])
-		{
+		if ('private' == Yii::app()->params['env']) {
 			Yii::app()->mailer->Host = 'smtp.gmail.com';
-			Yii::app()->mailer->SMTPAuth = true;     // turn on SMTP authentication
+			Yii::app()->mailer->SMTPAuth = true; // turn on SMTP authentication
 			Yii::app()->mailer->SMTPSecure = "tls";
 			Yii::app()->mailer->Username = Yii::app()->params['smtp.username'];
 			Yii::app()->mailer->Password = Yii::app()->params['smtp.password'];
 			Yii::app()->mailer->From = 'test@yiibackbone.loc';
 			Yii::app()->mailer->FromName = 'YiiBackbone';
-		}
-		else
-		{
+		} else {
 			Yii::app()->mailer->Host = 'localhost';
 			Yii::app()->mailer->From = 'test@yiibackbone.noloc';
 			Yii::app()->mailer->FromName = 'YiiBackbone';
@@ -98,7 +94,7 @@ class SiteController extends Controller
 		}
 
 		// Create the reset link
-		$pwResetLink = Yii::app()->request->hostInfo . "/#preset/". urlencode(rawurlencode($pwResetToken));
+		$pwResetLink = Yii::app()->request->hostInfo . "/#preset/" . urlencode(rawurlencode($pwResetToken));
 
 		$body = "
 Dear $user->fname $user->lname,
@@ -118,11 +114,12 @@ Admin
 			$this->sendResponse(417, CJSON::encode($return));
 	}
 
-	public function actionPassreset() {
+	public function actionPassreset()
+	{
 		$data = CJSON::decode(file_get_contents('php://input'));
 
 		$pwResetToken = rawurldecode(urldecode($data['pw_reset_token']));
-		$user = User::model()->findByAttributes(array('pw_reset_token'=>$pwResetToken));
+		$user = User::model()->findByAttributes(array('pw_reset_token' => $pwResetToken));
 
 		if (!$user)
 			$this->sendResponse(404);

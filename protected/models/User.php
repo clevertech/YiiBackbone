@@ -36,7 +36,7 @@ class User extends ActiveRecord
 		return $enc->hash($value);
 	}
 
-	function toJSON()
+	public function toJSON()
 	{
 		$attributes = parent::toJSON();
 		unset($attributes['password']);

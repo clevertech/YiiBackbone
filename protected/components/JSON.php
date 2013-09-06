@@ -2,7 +2,7 @@
 
 class JSON extends CJSON
 {
-	static function encode($var) {
+	public static function encode($var) {
 		if ('object' === gettype($var) && method_exists($var, 'toJSON')) {
 			$var = $var->toJSON();
 		}
