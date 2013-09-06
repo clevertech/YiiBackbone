@@ -1,7 +1,25 @@
 <?php
 class UserController extends Controller
 {
-	function actionRead($id)
+	public function accessRules()
+	{
+		return array(
+			array(
+				'allow',
+				'users' => array('@'),
+				'expression' => function() {
+					return 'admin' === Yii::app()->user->model->role;
+				}
+			),
+			array(
+				'allow',
+				'users' => array('@'),
+				'actions' => array('list', 'read')
+			),
+			array('deny', 'users' => array('*')),
+		);
+	}
+	public function actionRead($id)
 	{
 		$model = User::model()->findByPk($id);
 		if (null === $model)
@@ -9,26 +27,26 @@ class UserController extends Controller
 		$this->sendResponse(200, JSON::encode($model));
 	}
 
-	function actionList()
+	public function actionList()
 	{
 		$models = User::model()->findAll();
 		$this->sendResponse(200, JSON::encode($models));
 	}
 
-	function actionCreate()
+	public function actionCreate()
 	{
 		$model = new User();
 		$model->setAttributes($this->getJsonInput());
 		if (!$model->validate()) {
 			$this->sendResponse(400, CHtml::errorSummary($model));
-		} else if (!$model->save(false)) {
+		} elseif (!$model->save(false)) {
 			throw new CException('Cannot create a record');
 		}
 		$model->refresh();
 		$this->sendResponse(200, JSON::encode($model));
 	}
 
-	function actionUpdate($id)
+	public function actionUpdate($id)
 	{
 		if (null === ($model = User::model()->findByPk($id)))
 			throw new CHttpException(404);
@@ -42,7 +60,7 @@ class UserController extends Controller
 		$this->sendResponse(200, JSON::encode($model));
 	}
 
-	function actionDelete($id)
+	public function actionDelete($id)
 	{
 		if (null === ($model = User::model()->findByPk($id)))
 			throw new CHttpException(404);
