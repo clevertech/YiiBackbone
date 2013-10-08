@@ -3,7 +3,7 @@ YiiBackbone
 
 - Status: Work in progress.
 - Integration environment: http://yiibackbone.int.clevertech.biz/
-- Login: demo/1q2w3e
+- Login: super/1q2w3e
 
 Introduction
 ============
