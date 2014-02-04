@@ -148,6 +148,52 @@ of great Backbone.Marionette framework:
 
 - https://github.com/marionettejs/backbone.marionette
 
+Routing Example
+====================
+  The following documents the routing happening when you type this url into the browser: http://hostname/path-to-yiibackbone/
+
+    1) This will match to the default route defined in the Backbone router (app/js/router.js)
+          routes: {
+            ".*" : "postList"
+          }
+
+    2) That triggers the postList function in the same router file
+          postList: function() {
+            $.when(
+              //if this data hadn't been previously retrieved, this triggers the fetch() method on the posts
+              //collection.  Go to step 3
+              App.posts.length || App.posts.fetch()
+
+            ).done(function() {
+              //after the post data is present, include the Backbone View, then display the output
+              require(['views/post/list'], function(PostList) {
+                App.mainRegion.show(new PostList({
+                  collection : App.posts
+                }));
+              })
+            });
+          }
+
+    3) The fetch method of the post collection (/app/js/collections/post.js), uses the url property located within.
+       This will make a GET request to this url
+
+          url: 'api/post'
+
+    4) That request described in step 3 matches a defined url rule in (/protected/config/main.php). As indicated below:
+
+          The 1st arg represents the controller & method to be invoked
+          The 2nd arg is the url pattern to listen for
+          The 3rd arg is the type of request made for the url patter to listen for
+
+        //array('controller/method',    'pattern'=>'url/requested',     'verb'=>'REQUEST_METHOD')
+          array('post/list'       ,     'pattern'=>'api/post',          'verb'=>'GET')
+
+    5) The 'post/list' argument resolves to the PostController (/protected/controllers/PostController.php), specifically
+       the actionList method.  This uses the Yii framework to retreive data & return as JSON object.  Once this is done,
+       you'd return to the '.done()' callback of step 2 to display the posts
+
+
+
 Gotchas
 =======
 
