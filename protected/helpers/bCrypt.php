@@ -54,7 +54,11 @@ class bCrypt
 			// 12 rounds of HMAC must be reproduced / created verbatim, no known shortcuts.
 			// Salsa20 returns more than enough bytes.
 			for ($i = 0; $i < 12; $i++) {
-				$bytes = hash_hmac('salsa20', microtime() . $bytes, $key, true);
+				// Support for Salsa20 was removed in PHP 5.4.0
+				if (version_compare(PHP_VERSION, '5.4.0') >= 0) 
+					$bytes = hash_hmac('sha1', microtime() . $bytes, $key, true);
+				else
+					$bytes = hash_hmac('salsa20', microtime() . $bytes, $key, true);
 				usleep(10);
 			}
 		}
