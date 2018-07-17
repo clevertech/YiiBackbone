@@ -120,7 +120,7 @@ Testing
 For BDD on YiiBackbone we are using:
 
 - Cucumber.js : https://github.com/cucumber/cucumber-js
-- Jasmine     : http://pivotal.github.com/jasmine/
+- Jasmine     : https://jasmine.github.io/
 
 You need to install /app/package.json using NPM to enable Cucumber.js. Follow
 the instructions on Cucumber.js's docs site above.
